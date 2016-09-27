@@ -1,0 +1,10 @@
+
+https://wiki.osgeo.org/wiki/Point_Clustering
+
+http://gis.stackexchange.com/questions/11567/spatial-clustering-with-postgis
+http://gis.stackexchange.com/questions/144229/how-to-cluster-points-into-clusters-of-a-maximum-diameter-in-postgis/144230#144230
+
+http://mapserver.org/mapfile/cluster.html
+
+http://postgis.net/docs/manual-2.2/ST_ClusterWithin.html
+
