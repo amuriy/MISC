@@ -15,3 +15,11 @@ https://bitbucket.org/gpiffault/qgis-plugins/src/bd078110607f26ebfc420b82fe59b1c
 
 ---------------
 
+http://gis.stackexchange.com/questions/144535/how-to-create-transparent-hillshade
+
+http://www.gdal.org/frmt_rmf.html
+https://gist.github.com/clhenrick/5b3c7f7a54d844fc59a8
+http://wiki.openstreetmap.org/wiki/Hillshading_using_the_Alpha_Channel_of_an_Image
+http://www.mikejcorey.com/wordpress/2011/02/05/tutorial-create-beautiful-hillshade-maps-from-digital-elevation-models-with-gdal-and-mapnik/
+http://stackoverflow.com/questions/22988108/convert-grayscale-image-to-progressive-black-plus-transparency/23018544#23018544
+http://gis.stackexchange.com/questions/12833/how-to-smooth-a-dem
