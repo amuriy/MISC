@@ -1,25 +1,12 @@
+https://www.avito.ru/moskva/knigi_i_zhurnaly/knigi_dlya_uchitelya_po_russkomu_yazyku_826108057
 
-https://wiki.osgeo.org/wiki/Point_Clustering
+https://www.avito.ru/moskva/knigi_i_zhurnaly/uchebnaya_literatura_ra_russkomu_yazyku_126315931
 
-http://gis.stackexchange.com/questions/11567/spatial-clustering-with-postgis
-http://gis.stackexchange.com/questions/144229/how-to-cluster-points-into-clusters-of-a-maximum-diameter-in-postgis/144230#144230
+https://www.avito.ru/moskva/knigi_i_zhurnaly/russkiy_yazyk._informatika._literatura._knigi_711504271
 
-http://mapserver.org/mapfile/cluster.html
+https://www.avito.ru/moskva/knigi_i_zhurnaly/posobiya_dlya_podgotovki_k_ekzamenam_857669823
 
-http://postgis.net/docs/manual-2.2/ST_ClusterWithin.html
+https://www.avito.ru/moskva/knigi_i_zhurnaly/russkiy_yaz._-_testy_pos_uch-ki_shk._i_abit._k_ekz_265617553
 
----------------
+https://www.avito.ru/moskva/knigi_i_zhurnaly/sovetskie_uchebniki_rus._yaz._lit-ra_istoriya_i_dr_31446270
 
-https://bitbucket.org/gpiffault/qgis-plugins/wiki/Arrows
-https://bitbucket.org/gpiffault/qgis-plugins/src/bd078110607f26ebfc420b82fe59b1c3f7e84eae/Arrows/?at=default
-
----------------
-
-http://gis.stackexchange.com/questions/144535/how-to-create-transparent-hillshade
-
-http://www.gdal.org/frmt_rmf.html
-https://gist.github.com/clhenrick/5b3c7f7a54d844fc59a8
-http://wiki.openstreetmap.org/wiki/Hillshading_using_the_Alpha_Channel_of_an_Image
-http://www.mikejcorey.com/wordpress/2011/02/05/tutorial-create-beautiful-hillshade-maps-from-digital-elevation-models-with-gdal-and-mapnik/
-http://stackoverflow.com/questions/22988108/convert-grayscale-image-to-progressive-black-plus-transparency/23018544#23018544
-http://gis.stackexchange.com/questions/12833/how-to-smooth-a-dem
