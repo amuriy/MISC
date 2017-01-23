@@ -14,3 +14,13 @@ HTML-код для вставки в файл qa.html:
 SQL-запросы для вставки данных в таблицу "articles":
 
 INSERT INTO `gislab`.`articles` (`id`, `title_r`, `title_e`, `wiki`, `url`, `author_noforum`, `forum_discuss`, `author_forumid1`, `author_forumid2`, `author_forumid3`, `cat_r`, `cat_e`, `tags_r`, `tags_e`, `status`) VALUES ('', "Моделирование проекций орбит ИСЗ на поверхность Земли на Python с использованием модели SGP4 и API space-track.org", '', '0', "/qa/python-orbital-tracks.html", '', 21875, 16669, 0, 0, '', '', '', '', '');
+
+
+
+HTML-код для вставки в файл qa.html:
+
+<li><img src="/images/new.gif" alt="new" width="27" height="10" /><a href="/qa/qgis-sacp-sentinel2a.html">Опыт классификации космоснимка Sentinel- 2a с помощью Semi-Automatic Classification Plugin в QGIS</a> <img src="images/w.png" alt="wiki" width="16" height="16"><a href="/forum/viewtopic.php?t=21907"><img src="/images/forumq.gif" alt="Обсудить в форуме" width="14" height="14" border="0" /></a></li>
+
+SQL-запросы для вставки данных в таблицу "articles":
+
+INSERT INTO `gislab`.`articles` (`id`, `title_r`, `title_e`, `wiki`, `url`, `author_noforum`, `forum_discuss`, `author_forumid1`, `author_forumid2`, `author_forumid3`, `cat_r`, `cat_e`, `tags_r`, `tags_e`, `status`) VALUES ('', "Опыт классификации космоснимка Sentinel- 2a с помощью Semi-Automatic Classification Plugin в QGIS", '', '0', "/qa/qgis-sacp-sentinel2a.html", '', 21907, 16406, 0, 0, '', '', '', '', '');
