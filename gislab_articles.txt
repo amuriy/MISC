@@ -34,3 +34,7 @@ HTML-код для вставки в файл qa.html:
 SQL-запросы для вставки данных в таблицу "articles":
 
 INSERT INTO `gislab`.`articles` (`id`, `title_r`, `title_e`, `wiki`, `url`, `author_noforum`, `forum_discuss`, `author_forumid1`, `author_forumid2`, `author_forumid3`, `cat_r`, `cat_e`, `tags_r`, `tags_e`, `status`) VALUES ('', "Работа с ресурсами для оптимизации MapInfo", '', '0', "/qa/mapinfo-resources.html", '', 21916, 9620, 0, 0, '', '', '', '', '');
+
+
+
+INSERT INTO `gislab`.`articles` (`id`, `title_r`, `title_e`, `wiki`, `url`, `author_noforum`, `forum_discuss`, `author_forumid1`, `author_forumid2`, `author_forumid3`, `cat_r`, `cat_e`, `tags_r`, `tags_e`, `status`) VALUES ('', "Базовая оценка транспортной доступности средствами GRASS GIS и QGIS", '', '0', "/qa/isochrone-map-grass-qgis.html", '', 22712, 16669, 0, 0, '', '', '', '', '');
