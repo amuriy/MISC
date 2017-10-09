@@ -33,7 +33,7 @@
   ##### заливка / обводка / штриховка (1 - есть; 0 - нет; 11,12 и т.д. - типы)
   
     CLASS  #  1 / 0 / 0
-    NAME "1"
+    NAME "100"
     EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND  ("[$hatch_color]" = "#ncolor") AND ("[$outline_color]" = "#ncolor"))
     STYLE
       COLOR [$color]
@@ -42,19 +42,9 @@
   END # CLASS
   
 
-      CLASS  #  1 / 1 / 0
-    NAME "1"
-    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND  ("[$hatch_color]" = "#ncolor") AND ("[$outline_color]" = "#ncolor"))
-    STYLE
-      COLOR [$color]
-      OPACITY [$opacity]
-   END # STYLE
-  END # CLASS
-  
-  
   
       CLASS  #  1 / 11 / 0
-    NAME "1"
+    NAME "1110"
     EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND  ("[$hatch_color]" = "#ncolor") AND ("[$outline_color]" = "#ncolor") AND ("[$outline]" = "01"))
     STYLE
       COLOR [$color]
@@ -63,6 +53,66 @@
       OPACITY [$opacity]
    END # STYLE
   END # CLASS
+   
+    
+      CLASS  #  1 / 13 / 0
+    NAME "1130"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND  ("[$hatch_color]" = "#ncolor") AND ("[$outline_color]" = "#ncolor") AND ("[$outline]" = "03"))
+    STYLE
+      COLOR [$color]
+      OUTLINECOLOR [$outline_color]
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE
+  END # CLASS
+  
+    
+      CLASS  #  1 / 14 / 0
+    NAME "1140"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND  ("[$hatch_color]" = "#ncolor") AND ("[$outline_color]" = "#ncolor") AND ("[$outline]" = "04"))
+    STYLE
+      COLOR [$color]
+      OUTLINECOLOR [$outline_color]
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE
+  END # CLASS
+  
+        CLASS  #  1 / 15 / 0
+    NAME "1150"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND  ("[$hatch_color]" = "#ncolor") AND ("[$outline_color]" = "#ncolor") AND ("[$outline]" = "05"))
+    STYLE
+      COLOR [$color]
+      OUTLINECOLOR [$outline_color]
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE
+  END # CLASS
+  
+  
+  CLASS  #  1 / 16 / 0
+    NAME "1160"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND  ("[$hatch_color]" = "#ncolor") AND ("[$outline_color]" = "#ncolor") AND ("[$outline]" = "06"))
+    STYLE
+      COLOR [$color]
+      OUTLINECOLOR [$outline_color]
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE
+  END # CLASS
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   
