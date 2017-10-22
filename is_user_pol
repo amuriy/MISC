@@ -31,7 +31,158 @@
 
   
   ##### заливка / обводка / штриховка (1 - есть; 0 - нет; 11,12 и т.д. - типы)
+
+## 
+
+    CLASS  #  0 / 0 / 11
+    NAME "0011"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$hatch]" = "01"))
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "horline"
+	OPACITY [$opacity]	
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  0 / 0 / 12
+    NAME "0012"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$hatch]" = "02"))
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "vertline"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  0 / 0 / 13
+    NAME "0013"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$hatch]" = "03"))
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "plus"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  0 / 0 / 14
+    NAME "0014"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$hatch]" = "04"))
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "slash"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  0 / 0 / 15
+    NAME "0015"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$hatch]" = "05"))
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "backslash"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  0 / 0 / 16
+    NAME "0016"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$hatch]" = "06"))
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "times"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+
+###############
+
+
+CLASS  #  0 / 11 / 0
+    NAME "0110"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" = "#ncolor") AND ("[$outline_color]" != "#ncolor") AND  ("[$outline]" = "01"))
+    STYLE
+      OUTLINECOLOR [$outline_color]
+      WIDTH [$outline_width]	
+      OPACITY [$opacity]
+   END # STYLE
+  END # CLASS
   
+
+  CLASS  #  0 / 13 / 0
+    NAME "0130"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" = "#ncolor") AND ("[$outline_color]" != "#ncolor") AND  ("[$outline]" = "03"))
+    STYLE
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE
+  END # CLASS
+
+
+    CLASS  #  0 / 14 / 0
+    NAME "0140"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" = "#ncolor") AND ("[$outline_color]" != "#ncolor") AND  ("[$outline]" = "04"))
+    STYLE
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERNi
+         3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE
+  END # CLASS
+
+
+    CLASS  #  0 / 15 / 0
+    NAME "0150"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" = "#ncolor") AND ("[$outline_color]" != "#ncolor") AND  ("[$outline]" = "05"))
+    STYLE
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+o         10.00 3.00 3.00 3.00      
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE
+  END # CLASS
+
+
+    CLASS  #  0 / 16 / 0
+    NAME "0160"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" = "#ncolor") AND ("[$outline_color]" != "#ncolor") AND  ("[$outline]" = "06"))
+    STYLE
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00 3.00 3.00 3.00 3.00      
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE
+
+
+
+##################################################
+
+
+
     CLASS  #  1 / 0 / 0
     NAME "100"
     EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND  ("[$hatch_color]" = "#ncolor") AND ("[$outline_color]" = "#ncolor"))
@@ -45,11 +196,11 @@
   
       CLASS  #  1 / 11 / 0
     NAME "1110"
-    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND  ("[$hatch_color]" = "#ncolor") AND ("[$outline_color]" = "#ncolor") AND ("[$outline]" = "01"))
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND  ("[$hatch_color]" = "#ncolor") AND ("[$outline_color]" != "#ncolor") AND ("[$outline]" = "01"))
     STYLE
       COLOR [$color]
       OUTLINECOLOR [$outline_color]
-      WIDTH [$outline_width]
+      WIDTH [$outline_width]	
       OPACITY [$opacity]
    END # STYLE
   END # CLASS
@@ -57,10 +208,15 @@
     
       CLASS  #  1 / 13 / 0
     NAME "1130"
-    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND  ("[$hatch_color]" = "#ncolor") AND ("[$outline_color]" = "#ncolor") AND ("[$outline]" = "03"))
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND  ("[$hatch_color]" = "#ncolor") AND ("[$outline_color]" != "#ncolor") AND ("[$outline]" = "03"))
     STYLE
       COLOR [$color]
       OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00
+      END # PATTERN
       WIDTH [$outline_width]
       OPACITY [$opacity]
    END # STYLE
@@ -69,277 +225,162 @@
     
       CLASS  #  1 / 14 / 0
     NAME "1140"
-    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND  ("[$hatch_color]" = "#ncolor") AND ("[$outline_color]" = "#ncolor") AND ("[$outline]" = "04"))
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND  ("[$hatch_color]" = "#ncolor") AND ("[$outline_color]" != "#ncolor") AND ("[$outline]" = "04"))
     STYLE
       COLOR [$color]
       OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         3.00 3.00
+      END # PATTERN
       WIDTH [$outline_width]
       OPACITY [$opacity]
    END # STYLE
   END # CLASS
+
   
         CLASS  #  1 / 15 / 0
     NAME "1150"
-    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND  ("[$hatch_color]" = "#ncolor") AND ("[$outline_color]" = "#ncolor") AND ("[$outline]" = "05"))
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND  ("[$hatch_color]" = "#ncolor") AND ("[$outline_color]" != "#ncolor") AND ("[$outline]" = "05"))
     STYLE
       COLOR [$color]
       OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.0 3.00 3.00 3.00
+      END # PATTERN
       WIDTH [$outline_width]
       OPACITY [$opacity]
    END # STYLE
   END # CLASS
+
   
   
   CLASS  #  1 / 16 / 0
     NAME "1160"
-    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND  ("[$hatch_color]" = "#ncolor") AND ("[$outline_color]" = "#ncolor") AND ("[$outline]" = "06"))
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND  ("[$hatch_color]" = "#ncolor") AND ("[$outline_color]" != "#ncolor") AND ("[$outline]" = "06"))
     STYLE
       COLOR [$color]
       OUTLINECOLOR [$outline_color]
-      WIDTH [$outline_width]
-      OPACITY [$opacity]
-   END # STYLE
-  END # CLASS
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-    CLASS  # контур линия + заливка + без штриховки
-#    NAME "Графический примитив - полигон"
-    NAME "121"
-     EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" = "#ncolor") AND  ("[$outline]" = "01") )
-    STYLE
-      COLOR [$color]
-      OUTLINECOLOR [$outline_color]
-      WIDTH [$outline_width]
-      OPACITY [$opacity]
-    END # STYLE
-   END # CLASS
-
-    CLASS  # контур линия + заливка + штриховка крест
-#    NAME "Графический примитив - полигон"
-    NAME "121"
-     EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND  ("[$outline]" = "01") )
-    STYLE
-      COLOR [$color]
-      OUTLINECOLOR [$outline_color]
-      WIDTH [$outline_width]
-      OPACITY [$opacity]
-    END # STYLE
-
-         STYLE
-        COLOR [$hatch_color]
-        SIZE 16
-        SYMBOL "times"
-      END # STYLE
-
-
-   END # CLASS
-
-
-    CLASS  # контур линия + заливка + штриховка гор.линия
-#    NAME "Графический примитив - полигон"
-    NAME "121"
-     EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND  ("[$outline]" = "01") AND ("[$hatch]" = "01") )
-    STYLE
-      COLOR [$color]
-      OUTLINECOLOR [$outline_color]
-      WIDTH [$outline_width]
-      OPACITY [$opacity]
-    END # STYLE
-
-         STYLE
-        COLOR [$hatch_color]
-        SIZE 16
-        SYMBOL "horline"
-      END # STYLE
-   END # CLASS
-
-
-
-
-    CLASS  # контур линия + заливка + штриховка верт. линия 
-#    NAME "Графический примитив - полигон"
-    NAME "121"
-     EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" = "#ncolor") AND  ("[$outline]" = "01") )
-    STYLE
-      COLOR [$color]
-      OUTLINECOLOR [$outline_color]
-      WIDTH [$outline_width]
-      OPACITY [$opacity]
-    END # STYLE
-
-         STYLE
-        COLOR [$hatch_color]
-        SIZE 16
-        SYMBOL "vertline"
-      END # STYLE
-   END # CLASS
-  
-  
-  CLASS  #  заливка  + без штриховки + без 
-#    NAME "Графический примитив - полигон"
-    NAME "1"
-    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND  ("[$hatch_color]" = "#ncolor"))
-    # Берём только объекты, относящиеся к классификатору графических примитивов, являющиеся полигонами. Сплошная заливка
-    # Есть сплошная заливка (без шриховки)
-    STYLE
-      COLOR [$color]
-      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.0 3.00 3.00 3.00 3.00 3.00
+      END # PATTERN
       WIDTH [$outline_width]
       OPACITY [$opacity]
    END # STYLE
   END # CLASS
 
- CLASS  # Штриховка полигонов символ Х
-#    NAME "Графический примитив - полигон"
-    NAME "2"
-   EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND  ("[$hatch_color]" != "#ncolor") AND  ("[$hatch]" = "06"))
-    # Берём только объекты, относящиеся к классификатору графических примитивов, являющиеся полигонами. 
-    # Есть Штриховка.
-    STYLE
-      COLOR [$color]
-      WIDTH [$outline_width]
-      OPACITY [$opacity]
-    END # STYLE
 
+#############    @@@   @@@@@@   #############  
+  
+  
+    CLASS  #  0 / 11 / 11
+    NAME "01111"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" != "#ncolor") AND  ("[$outline]" = "01") AND  ("[$hatch]" = "01"))
+    STYLE
+      OUTLINECOLOR [$outline_color]
+      WIDTH [$outline_width]	
+      OPACITY [$opacity]
+   END # STYLE    
      STYLE
         COLOR [$hatch_color]
         SIZE 16
-        SYMBOL "times"
+        SYMBOL "horline"
+	OPACITY [$opacity]	
       END # STYLE
     END # CLASS
 
-
-
-
-  CLASS  # Штриховка полигонов символ +
-#    NAME "Графический примитив - полигон"
-    NAME "3"
-   EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND  ("[$hatch_color]" != "#ncolor") AND  ("[$hatch]" = "03"))
-    # Берём только объекты, относящиеся к классификатору графических примитивов, являющиеся полигонами. 
-    # Есть Штриховка.
-    STYLE
-      COLOR [$color]
-      WIDTH [$outline_width]
+    CLASS  #  0 / 11 / 12
+    NAME "01112"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "01") AND  ("[$hatch]" = "02"))
+        STYLE
+      OUTLINECOLOR [$outline_color]
+      WIDTH [$outline_width]	
       OPACITY [$opacity]
-    END # STYLE
+   END # STYLE
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "vertline"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
 
+    CLASS  #  0 / 11 / 13
+    NAME "01113"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "01") AND  ("[$hatch]" = "03"))
+        STYLE
+      OUTLINECOLOR [$outline_color]
+      WIDTH [$outline_width]	
+      OPACITY [$opacity]
+   END # STYLE
      STYLE
         COLOR [$hatch_color]
         SIZE 16
         SYMBOL "plus"
+	OPACITY [$opacity]
       END # STYLE
     END # CLASS
-    
-  CLASS  # Штриховка полигонов горизонтальная
-#    NAME "Графический примитив - полигон"
-    NAME "4"
-   EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND  ("[$hatch_color]" != "#ncolor") AND  ("[$hatch]" = "01"))
-    # Берём только объекты, относящиеся к классификатору графических примитивов, являющиеся полигонами. 
-    # Есть Штриховка.
-    STYLE
-      COLOR [$color]
-      WIDTH [$outline_width]
-      OPACITY [$opacity]
-    END # STYLE
 
-     STYLE
-        COLOR [$hatch_color]
-        SIZE 16
-        SYMBOL "horline"
-      END # STYLE
-    END # CLASS
-    
-  CLASS  # Штриховка полигонов вертикальная
-#    NAME "Графический примитив - полигон"
-    NAME "5"
-   EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND  ("[$hatch_color]" != "#ncolor") AND  ("[$hatch]" = "02"))
-    # Берём только объекты, относящиеся к классификатору графических примитивов, являющиеся полигонами. 
-    # Есть Штриховка.
-    STYLE
-      COLOR [$color]
-      WIDTH [$outline_width]
+    CLASS  #  0 / 11 / 14
+    NAME "01114"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "01") AND  ("[$hatch]" = "04"))
+        STYLE
+      OUTLINECOLOR [$outline_color]
+      WIDTH [$outline_width]	
       OPACITY [$opacity]
-    END # STYLE
-
-     STYLE
-        COLOR [$hatch_color]
-        SIZE 16
-        SYMBOL "vertline"
-      END # STYLE
-    END # CLASS
-    
-      CLASS  # Штриховка полигонов slash
-#    NAME "Графический примитив - полигон"
-    NAME "6"
-   EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND  ("[$hatch_color]" != "#ncolor") AND  ("[$hatch]" = "04"))
-    # Берём только объекты, относящиеся к классификатору графических примитивов, являющиеся полигонами. 
-    # Есть Штриховка.
-    STYLE
-      COLOR [$color]
-      WIDTH [$outline_width]
-      OPACITY [$opacity]
-    END # STYLE
-
+   END # STYLE
      STYLE
         COLOR [$hatch_color]
         SIZE 16
         SYMBOL "slash"
+	OPACITY [$opacity]
       END # STYLE
     END # CLASS
-    
-          CLASS  # Штриховка полигонов backslash
-#    NAME "Графический примитив - полигон"
-    NAME "7"
-   EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND  ("[$hatch_color]" != "#ncolor") AND  ("[$hatch]" = "05"))
-    # Берём только объекты, относящиеся к классификатору графических примитивов, являющиеся полигонами. 
-    # Есть Штриховка.
-    STYLE
-      COLOR [$color]
-      WIDTH [$outline_width]
-      OPACITY [$opacity]
-    END # STYLE
 
+    CLASS  #  0 / 11 / 15
+    NAME "01115"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "01") AND  ("[$hatch]" = "05"))
+        STYLE
+      OUTLINECOLOR [$outline_color]
+      WIDTH [$outline_width]	
+      OPACITY [$opacity]
+   END # STYLE
      STYLE
         COLOR [$hatch_color]
         SIZE 16
         SYMBOL "backslash"
+	OPACITY [$opacity]
       END # STYLE
     END # CLASS
-    
-    
-    CLASS  # Полигон с контуром 
-#    NAME "Графический примитив - полигон"
-    NAME "8"
-     EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" = "#ncolor") AND  ("[$outline]" = "01") )
-    # Берём только объекты, относящиеся к классификатору графических примитивов, являющиеся полигонами. Есть контур
-    # Есть контур, без заливки.
-    STYLE
+
+    CLASS  #  0 / 11 / 16
+    NAME "01116"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "01") AND  ("[$hatch]" = "06"))
+        STYLE
       OUTLINECOLOR [$outline_color]
-      WIDTH [$outline_width]
+      WIDTH [$outline_width]	
       OPACITY [$opacity]
-    END # STYLE
-   END # CLASS
-    
-     CLASS  # Пунктирный контур без заливки
-#    NAME "Графический примитив - полигон"
-    NAME "9"
-     EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" = "#ncolor") AND  ("[$outline]" = "03"))
-    # Берём только объекты, относящиеся к классификатору графических примитивов, являющиеся полигонами. Пунктирный контур
-    # Заливки нет.
+   END # STYLE
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "times"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+
+
+############### !!!!!!!!!!!!!!!!!  !!!   ###############
+
+    CLASS  #  0 / 13 / 11
+    NAME "01311"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" != "#ncolor") AND  ("[$outline]" = "03") AND  ("[$hatch]" = "01"))
     STYLE
       OUTLINECOLOR [$outline_color]
       LINECAP BUTT
@@ -349,109 +390,18 @@
       END # PATTERN
       WIDTH [$outline_width]
       OPACITY [$opacity]
-   END # STYLE
-  END # CLASS
-  
-   CLASS  # Точечный контур без заливки
-#    NAME "Графический примитив - полигон"
-    NAME "10"
-    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" = "#ncolor") AND  ("[$outline]" = "04"))
-    # Берём только объекты, относящиеся к классификатору графических примитивов, являющиеся полигонами. Пунктирный контур
-    # Заливки нет.
-    STYLE
-      OUTLINECOLOR [$outline_color]
-      LINECAP BUTT
-      LINEJOIN BEVEL 
-      PATTERN
-         3.00 3.00
-      END # PATTERN
-      WIDTH [$outline_width]
-      OPACITY [$opacity]
-   END # STYLE
-  END # CLASS
-  
-  
-   CLASS  # Штрих-пунктир контур без заливки
-#    NAME "Графический примитив - полигон"
-    NAME "11"
-    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" = "#ncolor") AND  ("[$outline]" = "05"))
-    # Берём только объекты, относящиеся к классификатору графических примитивов, являющиеся полигонами. Штрих-пунктир контур
-    # Заливки нет.
-    STYLE
-      OUTLINECOLOR [$outline_color]
-      LINECAP BUTT
-      LINEJOIN BEVEL 
-      PATTERN
-         10.00 3.00 3.00 3.00
-      END # PATTERN
-      WIDTH [$outline_width]
-      OPACITY [$opacity]
-   END # STYLE
-  END # CLASS
-  
-     CLASS  # Штрих-штрихпунктир контур без заливки
-#    NAME "Графический примитив - полигон"
-    NAME "12"
-    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" = "#ncolor") AND  ("[$outline]" = "06"))
-    # Берём только объекты, относящиеся к классификатору графических примитивов, являющиеся полигонами. Штрих-пунктир контур
-    # Заливки нет.
-    STYLE
-      OUTLINECOLOR [$outline_color]
-      LINECAP BUTT
-      LINEJOIN BEVEL 
-      PATTERN
-         10.00 3.00 3.00 3.00 3.00 3.00
-      END # PATTERN
-      WIDTH [$outline_width]
-      OPACITY [$opacity]
-   END # STYLE
-  END # CLASS
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "horline"
+	OPACITY [$opacity]	
+      END # STYLE
+    END # CLASS
 
-
-
-#################################
-
-
-  
-
-
-
-
-    CLASS  # контур пунктир + заливка + без штриховки
-#    NAME "Графический примитив - полигон"
-    NAME "1211"
-     EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" = "#ncolor") AND  ("[$outline]" = "02") )
-    STYLE
-      COLOR [$color]
-      OUTLINECOLOR [$outline_color]
-      WIDTH [$outline_width]
-      OPACITY [$opacity]
-    END # STYLE
-   END # CLASS
-
-
-
-############################################
-
-
-    CLASS  # контур линия + заливка + с штриховкой
-#    NAME "Графический примитив - полигон"
-    NAME "122"
-     EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND  ("[$outline]" = "01") )
-    STYLE
-      OUTLINECOLOR [$outline_color]
-      WIDTH [$outline_width]
-      OPACITY [$opacity]
-    END # STYLE
-   END # CLASS
-
-
-     CLASS  # Пунктирный контур без заливки
-#    NAME "Графический примитив - полигон"
-    NAME "13"
-     EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" = "#ncolor") AND  ("[$outline]" = "03"))
-    # Берём только объекты, относящиеся к классификатору графических примитивов, являющиеся полигонами. Пунктирный контур
-    # Заливки нет.
+    CLASS  #  0 / 13 / 12
+    NAME "01312"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "03") AND  ("[$hatch]" = "02"))
     STYLE
       OUTLINECOLOR [$outline_color]
       LINECAP BUTT
@@ -461,15 +411,105 @@
       END # PATTERN
       WIDTH [$outline_width]
       OPACITY [$opacity]
-   END # STYLE
-  END # CLASS
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "vertline"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  0 / 13 / 13
+    NAME "01313"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "03") AND  ("[$hatch]" = "03"))
+    STYLE
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "plus"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  0 / 13 / 14
+    NAME "01314"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "03") AND  ("[$hatch]" = "04"))
+    STYLE
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "slash"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  0 / 13 / 15
+    NAME "01315"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "03") AND  ("[$hatch]" = "05"))
+    STYLE
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "backslash"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  0 / 13 / 16
+    NAME "01316"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "03") AND  ("[$hatch]" = "06"))
+    STYLE
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "times"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+
+############### !!!!!!!!!!!!  !!!    #########
   
-   CLASS  # Точечный контур без заливки
-#    NAME "Графический примитив - полигон"
-    NAME "14"
-    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" = "#ncolor") AND  ("[$outline]" = "04"))
-    # Берём только объекты, относящиеся к классификатору графических примитивов, являющиеся полигонами. Пунктирный контур
-    # Заливки нет.
+    CLASS  #  0 / 14 / 11
+    NAME "01411"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" != "#ncolor") AND  ("[$outline]" = "04") AND  ("[$hatch]" = "01"))
     STYLE
       OUTLINECOLOR [$outline_color]
       LINECAP BUTT
@@ -479,16 +519,126 @@
       END # PATTERN
       WIDTH [$outline_width]
       OPACITY [$opacity]
-   END # STYLE
-  END # CLASS
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "horline"
+	OPACITY [$opacity]	
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  0 / 14 / 12
+    NAME "01412"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "04") AND  ("[$hatch]" = "02"))
+    STYLE
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "vertline"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  0 / 14 / 13
+    NAME "01413"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "04") AND  ("[$hatch]" = "03"))
+    STYLE
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "plus"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  0 / 14 / 14
+    NAME "01414"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "04") AND  ("[$hatch]" = "04"))
+    STYLE
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "slash"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  0 / 14 / 15
+    NAME "01415"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "04") AND  ("[$hatch]" = "05"))
+    STYLE
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "backslash"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  0 / 14 / 16
+    NAME "01416"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "04") AND  ("[$hatch]" = "06"))
+    STYLE
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "times"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+
+############ ############# ############
   
-  
-   CLASS  # Штрих-пунктир контур без заливки
-#    NAME "Графический примитив - полигон"
-    NAME "15"
-    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" = "#ncolor") AND  ("[$outline]" = "05"))
-    # Берём только объекты, относящиеся к классификатору графических примитивов, являющиеся полигонами. Штрих-пунктир контур
-    # Заливки нет.
+    CLASS  #  0 / 15 / 11
+    NAME "01511"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" != "#ncolor") AND  ("[$outline]" = "05") AND  ("[$hatch]" = "01"))
     STYLE
       OUTLINECOLOR [$outline_color]
       LINECAP BUTT
@@ -498,15 +648,126 @@
       END # PATTERN
       WIDTH [$outline_width]
       OPACITY [$opacity]
-   END # STYLE
-  END # CLASS
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "horline"
+	OPACITY [$opacity]	
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  0 / 15 / 12
+    NAME "01512"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "05") AND  ("[$hatch]" = "02"))
+    STYLE
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00 3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "vertline"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  0 / 15 / 13
+    NAME "01513"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "05") AND  ("[$hatch]" = "03"))
+    STYLE
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00 3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "plus"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  0 / 15 / 14
+    NAME "01514"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "05") AND  ("[$hatch]" = "04"))
+    STYLE
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00 3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "slash"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  0 / 15 / 15
+    NAME "01515"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "05") AND  ("[$hatch]" = "05"))
+    STYLE
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00 3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "backslash"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  0 / 15 / 16
+    NAME "01516"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "05") AND  ("[$hatch]" = "06"))
+    STYLE
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00 3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "times"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+
+############# ####################### ########
   
-     CLASS  # Штрих-штрихпунктир контур без заливки
-#    NAME "Графический примитив - полигон"
-    NAME "16"
-    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" = "#ncolor") AND  ("[$outline]" = "06"))
-    # Берём только объекты, относящиеся к классификатору графических примитивов, являющиеся полигонами. Штрих-пунктир контур
-    # Заливки нет.
+    CLASS  #  0 / 16 / 11
+    NAME "01611"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" != "#ncolor") AND  ("[$outline]" = "06") AND  ("[$hatch]" = "01"))
     STYLE
       OUTLINECOLOR [$outline_color]
       LINECAP BUTT
@@ -516,8 +777,782 @@
       END # PATTERN
       WIDTH [$outline_width]
       OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "horline"
+	OPACITY [$opacity]	
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  0 / 16 / 12
+    NAME "01612"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "06") AND  ("[$hatch]" = "02"))
+    STYLE
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00 3.00 3.00 3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "vertline"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  0 / 16 / 13
+    NAME "01613"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "06") AND  ("[$hatch]" = "03"))
+    STYLE
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00 3.00 3.00 3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "plus"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  0 / 16 / 14
+    NAME "01614"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "06") AND  ("[$hatch]" = "04"))
+    STYLE
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00 3.00 3.00 3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "slash"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  0 / 16 / 15
+    NAME "01615"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "06") AND  ("[$hatch]" = "05"))
+    STYLE
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00 3.00 3.00 3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "backslash"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  0 / 16 / 16
+    NAME "01616"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" = "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "06") AND  ("[$hatch]" = "06"))
+    STYLE
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00 3.00 3.00 3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "times"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+
+
+
+
+
+
+
+
+########## #### 111       111      11 ########################
+
+
+
+
+
+    CLASS  #  1 / 11 / 11
+    NAME "11111"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" != "#ncolor") AND  ("[$outline]" = "01") AND  ("[$hatch]" = "01"))
+    STYLE
+      COLOR [$color]    
+      OUTLINECOLOR [$outline_color]
+      WIDTH [$outline_width]	
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "horline"
+	OPACITY [$opacity]	
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  1 / 11 / 12
+    NAME "11112"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "01") AND  ("[$hatch]" = "02"))
+        STYLE
+      COLOR [$color]	
+      OUTLINECOLOR [$outline_color]
+      WIDTH [$outline_width]	
+      OPACITY [$opacity]
    END # STYLE
-  END # CLASS
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "vertline"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  1 / 11 / 13
+    NAME "11113"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "01") AND  ("[$hatch]" = "03"))
+        STYLE
+      COLOR [$color]	
+      OUTLINECOLOR [$outline_color]
+      WIDTH [$outline_width]	
+      OPACITY [$opacity]
+   END # STYLE
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "plus"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  1 / 11 / 14
+    NAME "11114"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "01") AND  ("[$hatch]" = "04"))
+        STYLE
+      COLOR [$color]	
+      OUTLINECOLOR [$outline_color]
+      WIDTH [$outline_width]	
+      OPACITY [$opacity]
+   END # STYLE
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "slash"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  1 / 11 / 15
+    NAME "11115"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "01") AND  ("[$hatch]" = "05"))
+        STYLE
+      COLOR [$color]	
+      OUTLINECOLOR [$outline_color]
+      WIDTH [$outline_width]	
+      OPACITY [$opacity]
+   END # STYLE
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "backslash"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  1 / 11 / 16
+    NAME "11116"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "01") AND  ("[$hatch]" = "06"))
+        STYLE
+      COLOR [$color]	
+      OUTLINECOLOR [$outline_color]
+      WIDTH [$outline_width]	
+      OPACITY [$opacity]
+   END # STYLE
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "times"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+
+
+############### !!!!!!!!!!!!!!!!!  !!!   ###############
+
+    CLASS  #  1 / 13 / 11
+    NAME "11311"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" != "#ncolor") AND  ("[$outline]" = "03") AND  ("[$hatch]" = "01"))
+    STYLE
+      COLOR [$color]    
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "horline"
+	OPACITY [$opacity]	
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  1 / 13 / 12
+    NAME "11312"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "03") AND  ("[$hatch]" = "02"))
+    STYLE
+      COLOR [$color]    
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "vertline"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  1 / 13 / 13
+    NAME "11313"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "03") AND  ("[$hatch]" = "03"))
+    STYLE
+      COLOR [$color]    
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "plus"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  1 / 13 / 14
+    NAME "11314"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "03") AND  ("[$hatch]" = "04"))
+    STYLE
+      COLOR [$color]    
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "slash"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  1 / 13 / 15
+    NAME "11315"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "03") AND  ("[$hatch]" = "05"))
+    STYLE
+      COLOR [$color]    
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "backslash"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  1 / 13 / 16
+    NAME "11316"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "03") AND  ("[$hatch]" = "06"))
+    STYLE
+      COLOR [$color]    
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "times"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+
+############### !!!!!!!!!!!!  !!!    #########
+  
+    CLASS  #  1 / 14 / 11
+    NAME "11411"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" != "#ncolor") AND  ("[$outline]" = "04") AND  ("[$hatch]" = "01"))
+    STYLE
+      COLOR [$color]    
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "horline"
+	OPACITY [$opacity]	
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  1 / 14 / 12
+    NAME "11412"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "04") AND  ("[$hatch]" = "02"))
+    STYLE
+      COLOR [$color]    
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "vertline"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  1 / 14 / 13
+    NAME "11413"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "04") AND  ("[$hatch]" = "03"))
+    STYLE
+      COLOR [$color]    
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "plus"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  1 / 14 / 14
+    NAME "11414"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "04") AND  ("[$hatch]" = "04"))
+    STYLE
+      COLOR [$color]    
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "slash"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  1 / 14 / 15
+    NAME "11415"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "04") AND  ("[$hatch]" = "05"))
+    STYLE
+      COLOR [$color]    
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "backslash"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  1 / 14 / 16
+    NAME "11416"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "04") AND  ("[$hatch]" = "06"))
+    STYLE
+      COLOR [$color]    
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "times"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+
+############ ############# ############
+  
+    CLASS  #  1 / 15 / 11
+    NAME "11511"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" != "#ncolor") AND  ("[$outline]" = "05") AND  ("[$hatch]" = "01"))
+    STYLE
+      COLOR [$color]    
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00 3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "horline"
+	OPACITY [$opacity]	
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  1 / 15 / 12
+    NAME "11512"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "05") AND  ("[$hatch]" = "02"))
+    STYLE
+      COLOR [$color]    
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00 3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "vertline"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  1 / 15 / 13
+    NAME "11513"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "05") AND  ("[$hatch]" = "03"))
+    STYLE
+      COLOR [$color]    
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00 3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "plus"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  1 / 15 / 14
+    NAME "11514"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "05") AND  ("[$hatch]" = "04"))
+    STYLE
+      COLOR [$color]    
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00 3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "slash"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  1 / 15 / 15
+    NAME "11515"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "05") AND  ("[$hatch]" = "05"))
+    STYLE
+      COLOR [$color]    
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00 3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "backslash"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  1 / 15 / 16
+    NAME "11516"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "05") AND  ("[$hatch]" = "06"))
+    STYLE
+      COLOR [$color]    
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00 3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "times"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+
+############# ####################### ########
+  
+    CLASS  #  1 / 16 / 11
+    NAME "11611"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" != "#ncolor") AND  ("[$outline]" = "06") AND  ("[$hatch]" = "01"))
+    STYLE
+      COLOR [$color]    
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00 3.00 3.00 3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "horline"
+	OPACITY [$opacity]	
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  1 / 16 / 12
+    NAME "11612"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "06") AND  ("[$hatch]" = "02"))
+    STYLE
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00 3.00 3.00 3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "vertline"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  1 / 16 / 13
+    NAME "11613"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "06") AND  ("[$hatch]" = "03"))
+    STYLE
+      COLOR [$color]    
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00 3.00 3.00 3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "plus"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  1 / 16 / 14
+    NAME "11614"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "06") AND  ("[$hatch]" = "04"))
+    STYLE
+      COLOR [$color]    
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00 3.00 3.00 3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "slash"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  1 / 16 / 15
+    NAME "11615"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "06") AND  ("[$hatch]" = "05"))
+    STYLE
+      COLOR [$color]    
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00 3.00 3.00 3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "backslash"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+    CLASS  #  1 / 16 / 16
+    NAME "11616"
+    EXPRESSION (("[classif_id]" = "1000000032") AND  ("[$type]" = "polygon") AND ("[$color]" != "#ncolor") AND ("[$hatch_color]" != "#ncolor") AND ("[$outline_color]" = "#ncolor") AND  ("[$outline]" = "06") AND  ("[$hatch]" = "06"))
+    STYLE
+      COLOR [$color]    
+      OUTLINECOLOR [$outline_color]
+      LINECAP BUTT
+      LINEJOIN BEVEL 
+      PATTERN
+         10.00 3.00 3.00 3.00 3.00 3.00
+      END # PATTERN
+      WIDTH [$outline_width]
+      OPACITY [$opacity]
+   END # STYLE    
+     STYLE
+        COLOR [$hatch_color]
+        SIZE 16
+        SYMBOL "times"
+	OPACITY [$opacity]
+      END # STYLE
+    END # CLASS
+
+
+################ ########################
+
+
+
+
 
 
 
