@@ -1,0 +1,4 @@
+osmosis --read-pbf russia-latest.osm.pbf --tf accept-ways highway=* --tf accept-relations --used-node --write-pbf russia-latest_roads.osm.pbf
+
+planetsplitter  --dir=data --sort-ram-size=8000 --sort-threads=4 --prune-none --max-iterations=1  russia-latest_roads.osm.pbf
+
