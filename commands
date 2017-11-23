@@ -2,3 +2,6 @@ osmosis --read-pbf russia-latest.osm.pbf --tf accept-ways highway=* --tf accept-
 
 planetsplitter  --dir=data --sort-ram-size=8000 --sort-threads=4 --prune-none --max-iterations=1  russia-latest_roads.osm.pbf
 
+
+
+osmfilter russia-latest.osm.pbf --keep= --keep-relations="boundary=administrative place=city,town,village,hamlet,isolated_dwelling,locality" -o=test3.osm
