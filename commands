@@ -5,3 +5,9 @@ planetsplitter  --dir=data --sort-ram-size=8000 --sort-threads=4 --prune-none --
 
 
 osmfilter russia-latest.osm.pbf --keep= --keep-relations="boundary=administrative place=city,town,village,hamlet,isolated_dwelling,locality" -o=test3.osm
+
+######
+osmosis --read-pbf-fast RU-CE.osm.pbf --tf accept-relations boundary=administrative --used-way --used-node --write-pbf file=RU-CE.osm__test1.pbf
+
+osm2pgsql -G --slim --hstore --style fiosm.style --tag-transform-script fiosm.lua -d fias -U postgres RU-CE.osm__test1.pbf
+
