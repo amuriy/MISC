@@ -11,3 +11,8 @@ osmosis --read-pbf-fast RU-CE.osm.pbf --tf accept-relations boundary=administrat
 
 osm2pgsql -G --slim --hstore --style fiosm.style --tag-transform-script fiosm.lua -d fias -U postgres RU-CE.osm__test1.pbf
 
+######
+# получить только муниц. районы (admin_level=6)
+osmosis --read-pbf-fast RU-CE.osm.pbf --tf accept-relations boundary=administrative --used-way --used-node --write-pbf file=RU-CE.osm__test1.pbf
+osmconvert --hash-memory=2000 RU-CE.osm__test1.pbf -o=RU-CE.osm__test1.osm
+osmfilter RU-CE.osm__test1.osm --keep="admin_level=6" > RU-CE.osm__test1_adm3.osm
