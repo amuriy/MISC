@@ -1,10 +1,18 @@
+https://www.google.ru/search?client=ubuntu&channel=fs&q=grib+python+barbs&ie=utf-8&oe=utf-8&gfe_rd=cr&dcr=0&ei=YRmRWvH7IpTEsAHC24mgCw
 
-http://www.gks.ru/free_doc/new_site/bd_munst/munst.htm
+https://software.ecmwf.int/wiki/display/CKB/How+to+read+or+decode+a+GRIB+file
 
-http://www.gks.ru/free_doc/doc_2016/social/utoch-osn-12-2016.pdf
+http://basemaptutorial.readthedocs.io/en/latest/wrf.html
 
-http://www.gks.ru/free_doc/doc_2016/region/reg_gor16.pdf
+https://matplotlib.org/examples/pylab_examples/barb_demo.html
 
+http://geoexamples.blogspot.ru/2013/05/drawing-wind-barbs-gdal-python.html
 
+https://trac.osgeo.org/grass/browser/grass-addons/grass6/display/d.barb
 
+https://grasswiki.osgeo.org/wiki/GRIB
+
+https://grass.osgeo.org/grass64/manuals/addons/d.barb.html
+
+https://github.com/rveciana/geoexamples/tree/master/python/wind-python
 
