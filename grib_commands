@@ -1,0 +1,11 @@
+# links
+http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?dir=%2Fgfs.2018031506
+http://geoexamples.blogspot.ru/2012/12/raster-calculations-with-gdal-and-numpy.html
+https://grasswiki.osgeo.org/wiki/GRIB
+
+# commands
+gdal_translate -q -ot Int16 -r bilinear -co "COMPRESS=PACKBITS" -co "TILED=YES" -b 2 -a_nodata -9999 -a_srs "EPSG:4326"  ~/Downloads/gfs.t06z.pgrb2.0p25\(1\).f006 u-wind.tif
+gdal_translate -q -ot Int16 -r bilinear -co "COMPRESS=PACKBITS" -co "TILED=YES" -b 3 -a_nodata -9999 -a_srs "EPSG:4326"  ~/Downloads/gfs.t06z.pgrb2.0p25\(1\).f006 v-wind.tif
+gdal_calc.py -A u-wind.tif -B v-wind.tif --outfile=magn.tif --calc="sqrt(A*A+B*B)"
+gdal_polygonize.py -q -f "ESRI Shapefile"  magn.tif magn_pnt.shp magn magn
+ogr2ogr magn_centr.shp magn_pnt.shp  -dialect sqlite -sql "SELECT ST_Centroid(geometry), magn from magn_pnt"
