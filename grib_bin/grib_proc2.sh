@@ -259,9 +259,8 @@ proc_wind()
     	    	shape=$(echo $line | cut -d',' -f1 | sed 's/\"//g')
     	    	speed=$(echo $line | cut -d',' -f3)
     	    	direct=$(echo $line | cut -d',' -f4)
-		id=$(od -A n -N 2 -t u2 /dev/urandom)
 		
-    	    	echo "INSERT INTO is_grib.grib_wind_speed_dir2 (shape,speed,direct,time_data,id) VALUES (ST_GeomFromText('$shape','4326'),'$speed','$direct','$date0','$id' ;" >> $sql
+    	    	echo "INSERT INTO is_grib.grib_wind_speed_dir2 (shape,speed,direct,time_data) VALUES (ST_GeomFromText('$shape','4326'),'$speed','$direct','$date0' ;" >> $sql
 
     	    done
 

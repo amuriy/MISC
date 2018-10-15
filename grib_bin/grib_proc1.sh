@@ -345,10 +345,9 @@ towns_weather()
 	rain=$(echo $line | cut -d',' -f7)
 	snow=$(echo $line | cut -d',' -f8)
 	cloud=$(echo $line | cut -d',' -f9)
-	id=$(od -A n -N 2 -t u2 /dev/urandom)
 	
-	echo "INSERT INTO is_grib.grib_towns_odkb_weather (shape,admin_leve,name,population,time_data,time_zone,temper,rain,snow,cloud,id) 
-VALUES (ST_GeomFromText('$geom','4326'),'$adm','$name',$pop,'$date0','$tz',$temper,$rain,$snow,$cloud,'$id') ;" >> $sql
+	echo "INSERT INTO is_grib.grib_towns_odkb_weather (shape,admin_leve,name,population,time_data,time_zone,temper,rain,snow,cloud) 
+VALUES (ST_GeomFromText('$geom','4326'),'$adm','$name',$pop,'$date0','$tz',$temper,$rain,$snow,$cloud) ;" >> $sql
     done
 
     echo "update is_grib.grib_towns_odkb_weather set time_zone = (time_zone || ' hour') where time_zone not like '%hour%' ; " >> $sql
@@ -443,9 +442,8 @@ index_tables()
 
 	    echo $loc
 	    
-	    id=$(od -A n -N 2 -t u2 /dev/urandom)
-	    echo "INSERT INTO is_grib.grib_${name}_time_index (shape,location,time_data,id) 
-VALUES (ST_GeomFromText('$geom','4326'),'$loc','$date0','$id') ;" >> $sql
+	    echo "INSERT INTO is_grib.grib_${name}_time_index (shape,location,time_data) 
+VALUES (ST_GeomFromText('$geom','4326'),'$loc','$date0') ;" >> $sql
 	done
 
 	echo "update gip.layer set timefield = 'time_data=0000-00-00/9999-30-31' where namefull like '%grib%'" >> $sql
