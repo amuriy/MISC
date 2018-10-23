@@ -1,6 +1,6 @@
--- alter table
--- 	"import".z15_point 
--- 	add column color text ;
+alter table
+	"import".z15_point 
+	add column color text ;
 
 
 update 
