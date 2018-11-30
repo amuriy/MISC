@@ -1,55 +1,3 @@
-Задание 3.
-
-- Создаем таблицу с записями о Можайском шоссе в Москве:
-
-create table mozhaiskoe_road
-
-as
-
-select * from planet_osm_line as p where name = '%Можайское шоссе%' and ST_Contains((select p1.way from planet_osm_polygon as p1 where name = 'Можайский район'), way)
-
-- Создаем таблицу с записями о улицах пересекающих Можайское шоссе:
-
-create table intersectable_streets
-
-as
-
-select * from planet_osm_line as p1 where highway is not null and name not like '%Можайское шоссе%' and ST_Intersects(p1.way, (select ST_MakeLine(array(select way from mozhaiskoe_road))))
-
-- Экспортируем эти слои в QGIS.
-
-Следующий запрос выводит данные в формате GeoJSON, а также все атрибуты подходящей улицы.
-select ST_AsGeoJSON(p1.way), * from planet_osm_line as p1 where highway is not null and name not like '%Можайское шоссе%' and ST_Intersects(p1.way, (select ST_MakeLine(array(select way from mozhaiskoe_road))))    
-
-Задание 4:
-
-- Запрос на вывод мест общепита:
-
-select * from planet_osm_point where amenity = any('{bar, bbq, biergarten, cafe, drinking_water, fast_food, food_court, ice_cream, pub, restaurant}') and ST_Distance(ST_MakePoint(ST_X(way), ST_Y(way)), ST_MakePoint(4180184, 7518888)) < 2000;
-
-- Запрос на отображение мест общепита с последующим добавлением ее в QGIS:
-
-create table amenity_location
-
-as
-
-select * from planet_osm_point where amenity = any('{bar, bbq, biergarten, cafe, drinking_water, fast_food, food_court, ice_cream, pub, restaurant}') and ST_Distance(ST_MakePoint(ST_X(way), ST_Y(way)), ST_MakePoint(4180184, 7518888)) < 2000;
-
-
-Задание 5:
--         Dijkstra алгоритм:
-select * from pgr_dijkstra('select gid as id, source, target, cost, reverse_cost from ways', 169086, 347024, true);
--         Astar алгоритм:
-select * from pgr_astar('SELECT gid as id, source, target, cost, reverse_cost, x1, y1, x2, y2 FROM ways', 169086, 347024);
--         Bi-directional Dijkstra алгоритм:
-SELECT * FROM pgr_bdDijkstra('SELECT gid as id, source, target, cost, reverse_cost FROM ways', 169086, 347024, true);
--         Bi-directional Astar алгоритм:
-SELECT * FROM pgr_bdAStar('SELECT gid::INTEGER as id, source::INTEGER, target::INTEGER, cost, x1, y1, x2, y2, reverse_cost FROM ways', 4, 10, true, true);
-
-
-======================================================
-
-Я все переосмыслил, убрал лишнее. Вот как теперь я работаю, я получаю node как координату от которой я должен двигаться и середину edge как конечную координату (чтобы вывести сообщение о движении в каком либо направлении) через функцию  ST_Line_Interpolate_Point, и оборачиваю все это через ST_Azimuth, чтобы получить угол. Вот сам запрос:
 SELECT pt.seq, pt.node, pt.edge, (select cost_s from ways where gid = pt.edge) as длительность_в_сек, w.name, 
 (select case when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = pt.node), ST_Line_Interpolate_Point(the_geom, 0.5))) > 340 or degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = pt.node), ST_Line_Interpolate_Point(the_geom, 0.5))) <= 20 then 'На север'
 when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = pt.node), ST_Line_Interpolate_Point(the_geom, 0.5))) > 20 and degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = pt.node), ST_Line_Interpolate_Point(the_geom, 0.5))) <= 65 then 'На северо-восток'
@@ -63,32 +11,101 @@ when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = pt.no
 FROM pgr_dijkstra(
    'SELECT gid as id, source, target, length_m as cost, length_m as reverse_cost FROM ways',
    (SELECT source FROM ways
-    ORDER BY ST_Distance(
-        ST_StartPoint(the_geom),
-        ST_SetSRID(ST_MakePoint(37.58481,55.76980), 4326),
-        true
-   ) ASC
+    ORDER BY ST_StartPoint(the_geom) <-> ST_SetSRID(ST_MakePoint(37.60113,55.78483), 4326)
    LIMIT 1),
 (SELECT target FROM ways
-    ORDER BY ST_Distance(
-        ST_StartPoint(the_geom),
-        ST_SetSRID(ST_MakePoint(37.59474,55.77036), 4326),
-        true
-   ) ASC
-   LIMIT 1),
+ORDER BY ST_StartPoint(the_geom) <-> ST_SetSRID(ST_MakePoint(37.62286,55.77916), 4326)
+LIMIT 1),
    true
 ) as pt,
 ways as w
 where w.gid = pt.edge
 order by seq
 
+===================
+
+А вот запрос с функцией:
+SELECT pt.seq, pt.node, pt.edge, (select cost_s from ways where gid = pt.edge) as длительность_в_сек, w.name, 
+get_direction(pt.node :: integer, pt.edge :: integer) as направление, pt.cost as расстояние_в_метрах, pt.agg_cost as расстояние_в_метрах_agg
+FROM pgr_dijkstra(
+   'SELECT gid as id, source, target, length_m as cost, length_m as reverse_cost FROM ways',
+   (SELECT source FROM ways
+    ORDER BY ST_StartPoint(the_geom) <-> ST_SetSRID(ST_MakePoint(37.60113,55.78483), 4326)
+   LIMIT 1),
+(SELECT target FROM ways
+ORDER BY ST_StartPoint(the_geom) <-> ST_SetSRID(ST_MakePoint(37.62286,55.77916), 4326)
+LIMIT 1),
+   true
+) as pt,
+ways as w
+where w.gid = pt.edge
+order by seq
+
+Запрос выполнился за 7.7 секунд
+get_direction это моя функция, вот ее исходный код:
+create or replace function get_direction(node integer, edge integer)
+returns varchar(50) as $$
+declare 
+message varchar(50);
+begin
+select (case when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) > 340 or degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) <= 20 then 'На север'
+when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) > 20 and degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) <= 65 then 'На северо-восток'
+when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) > 65 and degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) <= 110 then 'На восток'
+when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) > 110 and degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) <= 155 then 'На юго-восток'
+when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) > 155 and degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) <= 200 then 'На юг'
+when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) > 200 and degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) <= 245 then 'На юго-запад'
+when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) > 245 and degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) <= 290 then 'На запад'
+when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) > 290 and degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) <= 340 then 'На северо-запад'
+end) into message from ways where ways.gid = edge;
+return message;
+end; $$ 
+LANGUAGE plpgsql
+
+==========================
+
+SELECT pt.seq, pt.node, pt.edge, (select cost_s from ways where gid = pt.edge) as длительность_в_сек, w.name, 
+get_direction(pt.node :: integer, pt.edge :: integer) as направление, pt.cost as расстояние_в_метрах, pt.agg_cost as расстояние_в_метрах_agg
+FROM pgr_dijkstra(
+   'SELECT gid as id, source, target, length_m as cost, length_m as reverse_cost FROM ways',
+   get_source(37.60113,55.78483),
+get_target(37.62286,55.77916),
+   true
+) as pt,
+ways as w
+where w.gid = pt.edge
+order by seq
 
 =========================
-Ответ Киму.
-
-По твоему крайнему запросу:
-- объясни, почему ты выбираешь именно срединную точку линии, а не конечную (хотя я догадываюсь, почему);
-- запрос работает очень долго (18 сек. для маршрута из 40 линий - это чересчур); происходит это из-за подзапросов к функции "pgr_dijkstra" для выбора id начального и конечного сегментов. Подумай, как можно сделать по-другому, чтобы ускорить процесс)  
 
 
+get_source:
+CREATE OR REPLACE FUNCTION public.get_source(
+    lat double precision,
+    lon double precision)
+  RETURNS integer AS
+$BODY$
+declare 
+sourceVar int;
+begin
+SELECT source into sourceVar FROM ways
+    ORDER BY ST_StartPoint(the_geom) <-> ST_SetSRID(ST_MakePoint(lat,lon), 4326)
+   LIMIT 1;
+return sourceVar;
+end; $BODY$
+  LANGUAGE plpgsql
 
+get_target:
+CREATE OR REPLACE FUNCTION public.get_target(
+    lat double precision,
+    lon double precision)
+  RETURNS integer AS
+$BODY$
+declare 
+sourceVar int;
+begin
+SELECT target into sourceVar FROM ways
+    ORDER BY ST_StartPoint(the_geom) <-> ST_SetSRID(ST_MakePoint(lat,lon), 4326)
+   LIMIT 1;
+return sourceVar;
+end; $BODY$
+  LANGUAGE plpgsql
