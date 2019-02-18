@@ -1,0 +1,111 @@
+SELECT pt.seq, pt.node, pt.edge, (select cost_s from ways where gid = pt.edge) as длительность_в_сек, w.name, 
+(select case when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = pt.node), ST_Line_Interpolate_Point(the_geom, 0.5))) > 340 or degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = pt.node), ST_Line_Interpolate_Point(the_geom, 0.5))) <= 20 then 'На север'
+when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = pt.node), ST_Line_Interpolate_Point(the_geom, 0.5))) > 20 and degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = pt.node), ST_Line_Interpolate_Point(the_geom, 0.5))) <= 65 then 'На северо-восток'
+when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = pt.node), ST_Line_Interpolate_Point(the_geom, 0.5))) > 65 and degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = pt.node), ST_Line_Interpolate_Point(the_geom, 0.5))) <= 110 then 'На восток'
+when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = pt.node), ST_Line_Interpolate_Point(the_geom, 0.5))) > 110 and degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = pt.node), ST_Line_Interpolate_Point(the_geom, 0.5))) <= 155 then 'На юго-восток'
+when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = pt.node), ST_Line_Interpolate_Point(the_geom, 0.5))) > 155 and degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = pt.node), ST_Line_Interpolate_Point(the_geom, 0.5))) <= 200 then 'На юг'
+when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = pt.node), ST_Line_Interpolate_Point(the_geom, 0.5))) > 200 and degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = pt.node), ST_Line_Interpolate_Point(the_geom, 0.5))) <= 245 then 'На юго-запад'
+when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = pt.node), ST_Line_Interpolate_Point(the_geom, 0.5))) > 245 and degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = pt.node), ST_Line_Interpolate_Point(the_geom, 0.5))) <= 290 then 'На запад'
+when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = pt.node), ST_Line_Interpolate_Point(the_geom, 0.5))) > 290 and degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = pt.node), ST_Line_Interpolate_Point(the_geom, 0.5))) <= 340 then 'На северо-запад'
+ end from ways where pt.edge = ways.gid), pt.cost as расстояние_в_метрах, pt.agg_cost as расстояние_в_метрах_agg
+FROM pgr_dijkstra(
+   'SELECT gid as id, source, target, length_m as cost, length_m as reverse_cost FROM ways',
+   (SELECT source FROM ways
+    ORDER BY ST_StartPoint(the_geom) <-> ST_SetSRID(ST_MakePoint(37.60113,55.78483), 4326)
+   LIMIT 1),
+(SELECT target FROM ways
+ORDER BY ST_StartPoint(the_geom) <-> ST_SetSRID(ST_MakePoint(37.62286,55.77916), 4326)
+LIMIT 1),
+   true
+) as pt,
+ways as w
+where w.gid = pt.edge
+order by seq
+
+===================
+
+А вот запрос с функцией:
+SELECT pt.seq, pt.node, pt.edge, (select cost_s from ways where gid = pt.edge) as длительность_в_сек, w.name, 
+get_direction(pt.node :: integer, pt.edge :: integer) as направление, pt.cost as расстояние_в_метрах, pt.agg_cost as расстояние_в_метрах_agg
+FROM pgr_dijkstra(
+   'SELECT gid as id, source, target, length_m as cost, length_m as reverse_cost FROM ways',
+   (SELECT source FROM ways
+    ORDER BY ST_StartPoint(the_geom) <-> ST_SetSRID(ST_MakePoint(37.60113,55.78483), 4326)
+   LIMIT 1),
+(SELECT target FROM ways
+ORDER BY ST_StartPoint(the_geom) <-> ST_SetSRID(ST_MakePoint(37.62286,55.77916), 4326)
+LIMIT 1),
+   true
+) as pt,
+ways as w
+where w.gid = pt.edge
+order by seq
+
+Запрос выполнился за 7.7 секунд
+get_direction это моя функция, вот ее исходный код:
+create or replace function get_direction(node integer, edge integer)
+returns varchar(50) as $$
+declare 
+message varchar(50);
+begin
+select (case when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) > 340 or degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) <= 20 then 'На север'
+when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) > 20 and degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) <= 65 then 'На северо-восток'
+when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) > 65 and degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) <= 110 then 'На восток'
+when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) > 110 and degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) <= 155 then 'На юго-восток'
+when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) > 155 and degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) <= 200 then 'На юг'
+when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) > 200 and degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) <= 245 then 'На юго-запад'
+when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) > 245 and degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) <= 290 then 'На запад'
+when degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) > 290 and degrees(ST_Azimuth((select the_geom from ways_vertices_pgr where id = node), ST_Line_Interpolate_Point(the_geom, 0.5))) <= 340 then 'На северо-запад'
+end) into message from ways where ways.gid = edge;
+return message;
+end; $$ 
+LANGUAGE plpgsql
+
+==========================
+
+SELECT pt.seq, pt.node, pt.edge, (select cost_s from ways where gid = pt.edge) as длительность_в_сек, w.name, 
+get_direction(pt.node :: integer, pt.edge :: integer) as направление, pt.cost as расстояние_в_метрах, pt.agg_cost as расстояние_в_метрах_agg
+FROM pgr_dijkstra(
+   'SELECT gid as id, source, target, length_m as cost, length_m as reverse_cost FROM ways',
+   get_source(37.60113,55.78483),
+get_target(37.62286,55.77916),
+   true
+) as pt,
+ways as w
+where w.gid = pt.edge
+order by seq
+
+=========================
+
+
+get_source:
+CREATE OR REPLACE FUNCTION public.get_source(
+    lat double precision,
+    lon double precision)
+  RETURNS integer AS
+$BODY$
+declare 
+sourceVar int;
+begin
+SELECT source into sourceVar FROM ways
+    ORDER BY ST_StartPoint(the_geom) <-> ST_SetSRID(ST_MakePoint(lat,lon), 4326)
+   LIMIT 1;
+return sourceVar;
+end; $BODY$
+  LANGUAGE plpgsql
+
+get_target:
+CREATE OR REPLACE FUNCTION public.get_target(
+    lat double precision,
+    lon double precision)
+  RETURNS integer AS
+$BODY$
+declare 
+sourceVar int;
+begin
+SELECT target into sourceVar FROM ways
+    ORDER BY ST_StartPoint(the_geom) <-> ST_SetSRID(ST_MakePoint(lat,lon), 4326)
+   LIMIT 1;
+return sourceVar;
+end; $BODY$
+  LANGUAGE plpgsql
