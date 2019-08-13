@@ -1,0 +1,24 @@
+CREATE OR REPLACE FUNCTION drape(my_wkt text) RETURNS geometry AS $$
+        DECLARE
+            geom3d geometry;
+        begin
+	        
+ WITH line AS
+   (SELECT my_wkt::geometry as geom),    
+ points2d AS
+    -- Extract its points
+    (SELECT (ST_DumpPoints(geom)).geom AS geom FROM line),
+  cells AS
+    -- Get DEM elevation for each
+    (SELECT p.geom AS geom, ST_Value(dem.rast, 1, p.geom) AS val
+     FROM dem, points2d p
+     WHERE ST_Intersects(dem.rast, p.geom)),
+    -- Instantiate 3D points
+  points3d AS
+    (SELECT ST_MakePoint(ST_X(geom), ST_Y(geom), val) FROM cells)
+-- Build 3D line from 3D points
+SELECT ST_MakeLine(st_makepoint) FROM points3d;
+           
+RETURN geom3d;           
+        END;
+ $$ LANGUAGE plpgsql;
