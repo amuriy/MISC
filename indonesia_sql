@@ -1,0 +1,19 @@
+CREATE SCHEMA is_emercom ;
+
+
+CREATE TABLE is_emercom.lake_vector (
+	id serial NOT NULL,
+	shape geometry(MULTIPOLYGON, 4326) NULL,
+	objectid uuid NOT NULL DEFAULT nextval_uuid(),
+	time_data timestamp NULL DEFAULT now(),
+	CONSTRAINT lake_vector_pkey PRIMARY KEY (objectid)
+);
+CREATE INDEX sidx_lake_vector_shape ON is_emercom.lake_vector USING gist (shape);
+
+-- Permissions
+
+ALTER TABLE is_emercom.lake_vector OWNER TO "BPD_OWNERS";
+GRANT ALL ON TABLE is_emercom.lake_vector TO "BPD_OWNERS";
+GRANT SELECT ON TABLE is_emercom.lake_vector TO "BPD_READERS";
+
+
