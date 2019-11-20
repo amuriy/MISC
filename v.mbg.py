@@ -226,17 +226,70 @@ def main():
     v.hull(input = 'newvect', output = 'newvect_hull', flags = 'f', quiet = True, overwrite = True)
 
 
-    import numpy
+    # import numpy
     
-    C, r2 = miniball.get_bounding_ball(hull_coords)
-    print(C)
-    print(r2)
+    # C, r2 = miniball.get_bounding_ball(hull_coords)
+    # print(C)
+    # print(r2)
     
     # import math
     # math.sqrt(r2)
 
     # echo '668076.12141766 227634.66619505' | v.in.ascii in=- out=circle_center sep=' ' --o
     # v.buffer in=circle_center out=circle dist=126720.88540607662 tolerance=0.001 --o
+
+
+    def getMinVolEllipse(P, tolerance=0.01):
+        """ Author:
+        https://github.com/minillinim/ellipsoid
+        """
+        (N, d) = shape(P)
+        d = float(d)
+        
+        # Q will be our working array
+        Q = vstack([copy(P.T), ones(N)]) 
+        QT = Q.T
+        
+        # initializations
+        err = 1.0 + tolerance
+        u = (1.0 / N) * ones(N)
+
+        # Khachiyan Algorithm
+        while err > tolerance:
+            V = dot(Q, dot(diag(u), QT))
+            M = diag(dot(QT , dot(linalg.inv(V), Q)))    # M the diagonal vector of an NxN matrix
+            j = argmax(M)
+            maximum = M[j]
+            step_size = (maximum - d - 1.0) / ((d + 1.0) * (maximum - 1.0))
+            new_u = (1.0 - step_size) * u
+            new_u[j] += step_size
+            err = linalg.norm(new_u - u)
+            u = new_u
+
+        # center of the ellipse 
+        center = dot(P.T, u)
+        
+        # the A matrix for the ellipse
+        A = linalg.inv(
+            dot(P.T, dot(diag(u), P)) - 
+            array([[a * b for b in center] for a in center])
+        ) / d
+        
+        # Get the values we'd like to return
+        U, s, rotation = linalg.svd(A)
+        radii = 1.0/sqrt(s)
+        
+        return (center, radii, rotation)
+
+
+
+    # find the ellipsoid
+    (center, radii, rotation) = getMinVolEllipse(hull_coords, .01)
+
+    print(center)
+    print(radii)
+    print(rotation)
+    
     
     
     sys.exit(1) 
