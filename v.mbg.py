@@ -204,11 +204,11 @@ def main():
     # Find minimum area bounding rectangle
     (rot_angle, area, width, height, center_point, corner_points) = minBoundingRect(hull_coords)
     
-    print "Minimum area bounding box:"
-    print "Rotation angle:", rot_angle, "rad  (", rot_angle*(180/math.pi), "deg )"
-    print "Width:", width, " Height:", height, "  Area:", area
-    print "Center point: \n", center_point 
-    print "Corner points: \n", corner_points, "\n" 
+    # print "Minimum area bounding box:"
+    # print "Rotation angle:", rot_angle, "rad  (", rot_angle*(180/math.pi), "deg )"
+    # print "Width:", width, " Height:", height, "  Area:", area
+    # print "Center point: \n", center_point 
+    # print "Corner points: \n", corner_points, "\n" 
     
     
     # plt.scatter(xy_points[:,0], xy_points[:,1])
@@ -239,74 +239,74 @@ def main():
     # v.buffer in=circle_center out=circle dist=126720.88540607662 tolerance=0.001 --o
 
 
-    def getMinVolEllipse(P, tolerance=0.01):
-        """ Author:
-        https://github.com/minillinim/ellipsoid
-        """
-        (N, d) = shape(P)
-        d = float(d)
+    # def getMinVolEllipse(P, tolerance=0.01):
+    #     """ Author:
+    #     https://github.com/minillinim/ellipsoid
+    #     """
+    #     (N, d) = shape(P)
+    #     d = float(d)
         
-        # Q will be our working array
-        Q = vstack([copy(P.T), ones(N)]) 
-        QT = Q.T
+    #     # Q will be our working array
+    #     Q = vstack([copy(P.T), ones(N)]) 
+    #     QT = Q.T
         
-        # initializations
-        err = 1.0 + tolerance
-        u = (1.0 / N) * ones(N)
+    #     # initializations
+    #     err = 1.0 + tolerance
+    #     u = (1.0 / N) * ones(N)
 
-        # Khachiyan Algorithm
-        while err > tolerance:
-            V = dot(Q, dot(diag(u), QT))
-            M = diag(dot(QT , dot(linalg.inv(V), Q)))    # M the diagonal vector of an NxN matrix
-            j = argmax(M)
-            maximum = M[j]
-            step_size = (maximum - d - 1.0) / ((d + 1.0) * (maximum - 1.0))
-            new_u = (1.0 - step_size) * u
-            new_u[j] += step_size
-            err = linalg.norm(new_u - u)
-            u = new_u
+    #     # Khachiyan Algorithm
+    #     while err > tolerance:
+    #         V = dot(Q, dot(diag(u), QT))
+    #         M = diag(dot(QT , dot(linalg.inv(V), Q)))    # M the diagonal vector of an NxN matrix
+    #         j = argmax(M)
+    #         maximum = M[j]
+    #         step_size = (maximum - d - 1.0) / ((d + 1.0) * (maximum - 1.0))
+    #         new_u = (1.0 - step_size) * u
+    #         new_u[j] += step_size
+    #         err = linalg.norm(new_u - u)
+    #         u = new_u
 
-        # center of the ellipse 
-        center = dot(P.T, u)
+    #     # center of the ellipse 
+    #     center = dot(P.T, u)
         
-        # the A matrix for the ellipse
-        A = linalg.inv(
-            dot(P.T, dot(diag(u), P)) - 
-            array([[a * b for b in center] for a in center])
-        ) / d
+    #     # the A matrix for the ellipse
+    #     A = linalg.inv(
+    #         dot(P.T, dot(diag(u), P)) - 
+    #         array([[a * b for b in center] for a in center])
+    #     ) / d
         
-        # Get the values we'd like to return
-        U, s, rotation = linalg.svd(A)
-        radii = 1.0/sqrt(s)
+    #     # Get the values we'd like to return
+    #     U, s, rotation = linalg.svd(A)
+    #     radii = 1.0/sqrt(s)
         
-        return (center, radii, rotation)
+    #     return (center, radii, rotation)
 
 
 
-    # find the ellipsoid
-    (center, radii, rotation) = getMinVolEllipse(hull_coords, .01)
+    # # find the ellipsoid
+    # (center, radii, rotation) = getMinVolEllipse(hull_coords, .01)
 
-    print(center)
-    print(radii)
-    print(rotation)
-
+    # print(center)
+    # print(radii)
+    # print(math.degrees((rotation)[1][1]))
+    
 
     
-    # import math
+    import math
 
-    # """
-    # https://stackoverflow.com/questions/38409156/minimal-enclosing-parallelogram-in-python
+    """
+    https://stackoverflow.com/questions/38409156/minimal-enclosing-parallelogram-in-python
     
-    # Minimal Enclosing Parallelogram
+    Minimal Enclosing Parallelogram
     
-    # area, v1, v2, v3, v4 = mep(convex_polygon)
+    area, v1, v2, v3, v4 = mep(convex_polygon)
     
-    # convex_polygon - array of points. Each point is a array [x, y] (1d array of 2 elements)
-    # points should be presented in clockwise order.
+    convex_polygon - array of points. Each point is a array [x, y] (1d array of 2 elements)
+    points should be presented in clockwise order.
     
-    # the algorithm used is described in the following paper:
-    # http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.53.9659&rep=rep1&type=pdf
-    # """
+    the algorithm used is described in the following paper:
+    http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.53.9659&rep=rep1&type=pdf
+    """
     
     def distance(p1, p2, p):
         return abs(((p2[1]-p1[1])*p[0] - (p2[0]-p1[0])*p[1] + p2[0]*p1[1] - p2[1]*p1[0]) /
@@ -331,7 +331,6 @@ def main():
                 t = (t + 1) % n
                 _p, _pp = convex_polygon[t % n], convex_polygon[(t+1) % n]
                 l.append(t)
-                
         return l
 
 
@@ -358,12 +357,12 @@ def main():
             q1, q2 = convex_polygon[z2 % n], convex_polygon[(z2+1) % n]
             ap1, aq1 = convex_polygon[l[z1 % n]], convex_polygon[l[z2 % n]]
             ap2, aq2 = parallel_vector(p1, p2, ap1), parallel_vector(q1, q2, aq1)
-
+            
             a = line_intersection(p1[0], p1[1], p2[0], p2[1], q1[0], q1[1], q2[0], q2[1])
             b = line_intersection(p1[0], p1[1], p2[0], p2[1], aq1[0], aq1[1], aq2[0], aq2[1])
             d = line_intersection(ap1[0], ap1[1], ap2[0], ap2[1], q1[0], q1[1], q2[0], q2[1])
             c = line_intersection(ap1[0], ap1[1], ap2[0], ap2[1], aq1[0], aq1[1], aq2[0], aq2[1])
-
+            
             s = distance(a, b, c) * math.sqrt((b[0]-a[0])**2 + (b[1]-a[1])**2)
             return s, a, b, c, d
 
@@ -381,36 +380,41 @@ def main():
             if z1 >= z2:
                 z2 = z1 + 1
             p1, p2 = convex_polygon[z1 % n], convex_polygon[(z1+1) % n]
+
             a, b, c = convex_polygon[z2 % n], convex_polygon[(z2+1) % n], convex_polygon[l[z2 % n]]
+            
             if distance(p1, p2, a) >= distance(p1, p2, b):
                 continue
-
+            
             while distance(p1, p2, c) > distance(p1, p2, b):
                 z2 += 1
                 a, b, c = convex_polygon[z2 % n], convex_polygon[(z2+1) % n], convex_polygon[l[z2 % n]]
-
+                
             st, at, bt, ct, dt = compute_parallelogram(convex_polygon, l, z1, z2)
-
+            
+            
             if st < so:
                 so, ao, bo, co, do, z1o, z2o = st, at, bt, ct, dt, z1, z2
 
-    # return so, ao, bo, co, do, z1o, z2o
+            # print('%s,%s,%s,%s,%s,%s,%s') % (so, ao, bo, co, do, z1o, z2o)
 
 
-    convex_polygon = hull_coords
+        
+        return so, ao, bo, co, do #, z1o, z2o
+    # sys.exit(1)            
 
+
+    convex_polygon = array([ [587790.440499, 101453.451971], [595563.18932, 209494.660587], [673290.677534, 287222.1488], [690390.72494, 231258.357287], [663186.104066, 149644.494663] ])
+    # convex_polygon = 100*random.random((10,2))
+
+    # convex_polygon = hull_coords[::-1]
+
+    print(convex_polygon)    
+    
     area, v1, v2, v3, v4 = mep(convex_polygon)
-    # print area
-    # print v1
-    
-    
-    
-    
-    sys.exit(1) 
-    
 
+    print('%s,%s,%s,%s,%s') % (area, v1, v2, v3, v4)
     
-
     
     
     
