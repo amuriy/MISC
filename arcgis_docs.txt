@@ -1,0 +1,28 @@
+The Group Option parameter on the dialog box (the group_option parameter in Python) will affect the output polygons and
+    attributes in the following ways:
+
+      □ Using NONE, none of the input features will be grouped. An output polygon feature will be created for each input
+        feature; the resulting polygons may overlap. The attributes of the input features will be maintained in the output
+        feature class. A new field, ORIG_FID, will be added to the output feature class and set to the input feature IDs.
+      □ Using ALL, one output polygon feature will be created for all input features. The attributes of the input features
+        will not be maintained in the output feature class.
+      □ Using LIST, each set of input features with the same field values in the specified group field(s) will be treated as
+        a group. An output polygon feature will be created for each group; the resulting polygons may overlap. The attributes
+        of the input features used as the group field or fields will be maintained in the output feature class.
+  • Each geometry type can be characterized by one or more unique measurements; these measurements can optionally be added to
+    the output as new fields as described below. The width, length, and diameter values are in feature units; the orientation
+    angles are in decimal degrees clockwise from north. The prefix, MBG_, indicates minimum bounding geometry field.
+
+      □ For RECTANGLE_BY_AREA and RECTANGLE_BY_WIDTH, the new fields and measurements are:
+          ☆ MBG_Width—The length of the shorter side of the resulting rectangle.
+          ☆ MBG_Length—The length of the longer side of the resulting rectangle.
+          ☆ MBG_Orientation—The orientation of the longer side of the resulting rectangle.
+      □ For ENVELOPE, the new fields and measurements are:
+          ☆ MBG_Width—The length of the shorter side of the resulting rectangle.
+          ☆ MBG_Length—The length of the longer side of the resulting rectangle.
+      □ For CONVEX_HULL, the new fields and measurements are:
+          ☆ MBG_Width—The shortest distance between any two vertices of the convex hull. (It may be found between more than
+            one pair of vertices, but the first found will be used.)
+          ☆ MBG_Length—The longest distance between any two vertices of the convex hull; these vertices are called antipodal
+            pairs or antipodal points. (It may be found between more than one pair of vertices, but the first found will be
+            used.)

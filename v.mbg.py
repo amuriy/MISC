@@ -1,16 +1,16 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 ############################################################################
 #
 # MODULE:       v.mbg
 #
 # AUTHOR(S):    Alexander Muriy
+#               (amuriy AT gmail DOT com)
 #
 # PURPOSE:      Creates a vector map containing polygons which represent a specified
 #               minimum bounding geometry enclosing each input feature or each group
 #               of input features
 #
-# COPYRIGHT:    (c) 2013, David Butterworth, University of Queensland
-#               (c) 2019, Alexander Muriy
+# COPYRIGHT:    (C) 2019 by the GRASS Development Team
 #
 #               This program is free software under the GNU General Public
 #               License (>=v2). Read the file COPYING that comes with GRASS
@@ -19,8 +19,7 @@
 #############################################################################
 #
 # REQUIREMENTS:
-#      - NumPy Python module
-#      - ??
+#      - NumPy module
 #  
 #%module
 #% description: Creates a vector map containing polygons which represent "Minimum Bounding Geometry".
@@ -30,9 +29,49 @@
 
 #%option G_OPT_V_INPUT
 #%  key: input
-#%  description: Vector map 
+#%  description: Input vector map 
 #%end
 
+#%option G_OPT_V_OUTPUT
+#%  key: output
+#%  description: Output vector map (minimum bounding geometry)
+#%end
+
+#%option
+#% key: geom_type
+#% type: string
+#% description: Type of output minimum bounding geometry
+#% required: yes
+#% multiple: no
+#% options: convex_hull, envelope, rectangle_area, circle, ellipse
+#% answer: rectangle_area
+#%end
+
+#%option
+#% key: group
+#% type: string
+#% description: Group input features
+#% required: no
+#% multiple: no
+#% options: none, all, list
+#% answer: none
+#%end
+
+#%option
+#% key: field
+#% type: string
+#% description: Attribute field to group input features
+#% required: no
+#% multiple: no
+#%end
+
+#%option
+#% key: export
+#% type: string
+#% description: Path to GeoPackage (.gpkg) file to export "minimum bounding geometry" polygons (into the separate layers due to GRASS topological issues with overlapping)
+#% required: no
+#% multiple: no
+#%end
 
 ##################
 # IMPORT MODULES #
@@ -41,388 +80,363 @@
 import os
 import sys
 import atexit
-from numpy import *
+import random
+import string
+
+import math
+import numpy as np
+
 import grass.script as grass
-# from grass.pygrass.modules.shortcuts import general as g
-# from grass.pygrass.modules.shortcuts import raster as r
 from grass.pygrass.modules.shortcuts import vector as v
-# from grass.pygrass.gis import region
+from grass.pygrass.modules.shortcuts import general as g
 from grass.pygrass.vector import VectorTopo
-from grass.pygrass.vector.geometry import Point 
+from grass.pygrass.vector import Vector
+from grass.pygrass.vector.geometry import Point
+from grass.exceptions import CalledModuleError
 
-import miniball
+from minboundingrect import minBoundingRect
+from minboundingcircle import get_bounding_ball as minBoundingCircle
+from minboundingellipse  import getMinVolEllipse as minBoundingEllipse
 
-# from matplotlib import pyplot as plt
 
 ####################
 #### FUNCTIONS #####
 ####################
 
 def cleanup():
-    """Remove temporary maps"""
     nuldev = open(os.devnull, 'w')
-    grass.run_command('g.remove', flags = 'f', quiet = True,
-                        type = ['raster','vector'], stderr = nuldev,
-                        pattern = '{}*'.format(tmpname))
+    grass.run_command('g.remove', flags = 'f', type = ['raster','vector'],
+                      stderr = nuldev, pattern = prefix + '*', quiet = True)
+    grass.run_command('g.remove', flags = 'f', type = 'region', name = 'TMP_REGION_V_MBG',
+                      stderr = nuldev, quiet = True)
+
     
+def random_name():
+    rand = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(8)])
+    return rand
+
 
 def vector_to_nparray(in_vect):
     data = VectorTopo(in_vect)
-    data.open('r')
-
+    data.open('r')    
     coords = []
     coor_list = []
     for i in range(len(data)):
         coor = data.read(i+1).coords()
         coor2 = " ".join(str(x) for x in coor)
         coor3 = [float(s) for s in coor2.split(' ')]
-        coords.append(coor3)
-        
-    coords_arr = array(coords)
+        coords.append(coor3)        
+    coords_arr = np.array(coords)
     return coords_arr
 
 
 def nparray_to_vector(in_array, out_vect):
     if in_array.ndim == 2: 
-        points = rec.fromarrays([in_array.T[0], in_array.T[1]])
+        points = np.rec.fromarrays([in_array.T[0], in_array.T[1]])
     elif in_array.ndim == 1:
-        points = [in_array]
-        
+        points = [in_array]        
     new = VectorTopo(out_vect)
-    new.open("w", overwrite=True)
-    
+    new.open("w", overwrite = True)
     for pnt in points:
         new.write(Point(*pnt))
-
     new.close()
     new.build() 
 
+
+def get_db_info(inmap):
+    vect = Vector(inmap)
+    vect.open()
+    link = vect.dblinks[0]
+    table = link.table()
+    cols = table.columns.items()
+    vect.close()
+    return cols
+
     
+def hull_make(in_vect, hull):
+    try:
+        v.hull(input = in_vect, output = hull, flags = 'f', quiet = True, stderr = nuldev)
+    except CalledModuleError:
+        grass.fatal(_('Cannot extract data with <group> option and compute convex hull... Make sure that there is no points in the input map with <group=none> option or check attributes values for special characters in the input vector map.'.format(in_vect)))
 
-def minBoundingRect(hull_points_2d):
-    """
-    author: David Butterworth
-    https://github.com/dbworth/minimum-area-bounding-rectangle
-    """
-    # Compute edges (x2-x1,y2-y1)
-    edges = zeros( (len(hull_points_2d)-1,2) ) # empty 2 column array
-    for i in range( len(edges) ):
-        edge_x = hull_points_2d[i+1,0] - hull_points_2d[i,0]
-        edge_y = hull_points_2d[i+1,1] - hull_points_2d[i,1]
-        edges[i] = [edge_x,edge_y]
-
-    # Calculate edge angles   atan2(y/x)
-    edge_angles = zeros( (len(edges)) ) # empty 1 column array
-    for i in range( len(edge_angles) ):
-        edge_angles[i] = math.atan2( edges[i,1], edges[i,0] )
-
-    # Check for angles in 1st quadrant
-    for i in range( len(edge_angles) ):
-        edge_angles[i] = abs( edge_angles[i] % (math.pi/2) ) # want strictly positive answers
-
-    # Remove duplicate angles
-    edge_angles = unique(edge_angles)
-
-    # Test each angle to find bounding box with smallest area
-    min_bbox = (0, sys.maxint, 0, 0, 0, 0, 0, 0) # rot_angle, area, width, height, min_x, max_x, min_y, max_y
-    for i in range( len(edge_angles) ):
-
-        # Create rotation matrix to shift points to baseline
-        # R = [ cos(theta)      , cos(theta-PI/2)
-        #       cos(theta+PI/2) , cos(theta)     ]
-        R = array([ [ math.cos(edge_angles[i]), math.cos(edge_angles[i]-(math.pi/2)) ], [ math.cos(edge_angles[i]+(math.pi/2)), math.cos(edge_angles[i]) ] ])
-
-        # Apply this rotation to convex hull points
-        rot_points = dot(R, transpose(hull_points_2d) ) # 2x2 * 2xn
-
-        # Find min/max x,y points
-        min_x = nanmin(rot_points[0], axis=0)
-        max_x = nanmax(rot_points[0], axis=0)
-        min_y = nanmin(rot_points[1], axis=0)
-        max_y = nanmax(rot_points[1], axis=0)
-
-        # Calculate height/width/area of this bounding rectangle
-        width = max_x - min_x
-        height = max_y - min_y
-        area = width*height
-
-        # Store the smallest rect found first (a simple convex hull might have 2 answers with same area)
-        if (area < min_bbox[1]):
-            min_bbox = ( edge_angles[i], area, width, height, min_x, max_x, min_y, max_y )
-        # Bypass, return the last found rect
-
-    # Re-create rotation matrix for smallest rect
-    angle = min_bbox[0]   
-    R = array([ [ math.cos(angle), math.cos(angle-(math.pi/2)) ], [ math.cos(angle+(math.pi/2)), math.cos(angle) ] ])
-
-    # Project convex hull points onto rotated frame
-    proj_points = dot(R, transpose(hull_points_2d) ) # 2x2 * 2xn
-
-    # min/max x,y points are against baseline
-    min_x = min_bbox[4]
-    max_x = min_bbox[5]
-    min_y = min_bbox[6]
-    max_y = min_bbox[7]
-
-    # Calculate center point and project onto rotated frame
-    center_x = (min_x + max_x)/2
-    center_y = (min_y + max_y)/2
-    center_point = dot( [ center_x, center_y ], R )
-
-    # Calculate corner points and project onto rotated frame
-    corner_points = zeros( (4,2) ) # empty 2 column array
-    corner_points[0] = dot( [ max_x, min_y ], R )
-    corner_points[1] = dot( [ min_x, min_y ], R )
-    corner_points[2] = dot( [ min_x, max_y ], R )
-    corner_points[3] = dot( [ max_x, max_y ], R )
-
-    return (angle, min_bbox[1], min_bbox[2], min_bbox[3], center_point, corner_points) # rot_angle, area, width, height, center_point, corner_points
+    
+def hull_get_coords(hull):
+    vert = hull + '_vert' 
+    v.to_points(input = hull, output = vert, use = 'vertex', layer = '-1',
+                flags = 't', quiet = True, stderr = nuldev)
+    hull_coords = vector_to_nparray(vert)
+    return hull_coords
 
 
+def mbg_make(in_vect, hull_coords, out_vect):
+    if geom_type in 'rectangle_area':
+        (rot_angle, area, width, height, center_point, corner_points) = minBoundingRect(hull_coords)
+        rot_angle_deg = rot_angle*(180/math.pi)
+        rand = random_name()
+        cpoints_map = prefix + rand
+        nparray_to_vector(corner_points, cpoints_map)
+
+        hull_make(cpoints_map, out_vect)
+    elif geom_type in 'convex_hull':
+        hull_make(in_vect, out_vect)
+    elif geom_type in 'envelope':
+        g.region(vector = in_vect, quiet = True)
+        v.in_region(output = out_vect, type = 'area', quiet = True,
+                    overwrite = True, stderr = nuldev)
+    elif geom_type in 'circle':
+        try:
+            ccenter, rad = minBoundingCircle(hull_coords)
+        except np.linalg.linalg.LinAlgError:
+            grass.fatal(_("Cannot compute minimum bounding circle for vector map <{}>".format(in_vect)))
+        lon = ccenter[0]
+        lat = ccenter[1]
+        rand = random_name()
+        ccenter_map = prefix + rand
+        new = VectorTopo(ccenter_map)
+        new.open('w', overwrite=True)
+        point0 = Point(float(lon), float(lat))
+        new.write(point0)
+        new.close()
+        v.buffer(input = ccenter_map, output = out_vect, distance = math.sqrt(rad), 
+                 tolerance=0.001, quiet = True, overwrite = True, stderr = nuldev)    
+    elif geom_type in 'ellipse':
+        (ell_center, ell_radius, ell_rotation_init) = minBoundingEllipse(hull_coords, .01)
+        
+        distance = ell_radius[1]
+        minordistance = ell_radius[0]
+        rot_00 = float(math.degrees(ell_rotation_init[0][0]))
+        rot_01 = float(math.degrees(ell_rotation_init[0][1]))
+
+        if rot_01 < 0 and rot_00 < 0:
+            ell_rotation = rot_00
+        elif (rot_01 > 0 and rot_00 < 0) and (abs(rot_01) > abs(rot_00)):
+            ell_rotation = -(rot_00) 
+        elif (rot_01 > 0 and rot_00 < 0) and (abs(rot_01) < abs(rot_00)):
+            ell_rotation = -(90 + rot_01) 
+        elif rot_01 < 0 and rot_00 > 0:
+            ell_rotation = rot_00
+        elif rot_01 > 0 and rot_00 > 0:
+            ell_rotation = -(rot_00)
+        
+        lon = ell_center[0]
+        lat = ell_center[1]
+        rand = random_name()        
+        ecenter_map = prefix + rand
+        new = VectorTopo(ecenter_map)
+        new.open('w', overwrite=True)
+        point0 = Point(float(lon), float(lat))
+        new.write(point0)
+        new.close()         
+        v.buffer(input = ecenter_map, output = out_vect, distance = distance, 
+                 minordistance = minordistance, angle = ell_rotation, tolerance=0.001,
+                 quiet = True, overwrite = True, stderr = nuldev)
+
+
+def mbg_postprocess(in_vect, geom_todel, out_vect):
+    rand = random_name()    
+    tmp_gpkg = os.path.join(os.path.dirname(tmpfile), rand+'.gpkg')    
+    v.out_ogr(input__ = in_vect, output = tmp_gpkg, type__ = 'area',
+              flags = 'c', format_ = 'GPKG',
+              quiet = True, stderr = nuldev)
+    rand = random_name()
+    mbg_ogr = prefix + rand
+    v.import_(input_ = tmp_gpkg, output = mbg_ogr)
+    v.edit(map_ = mbg_ogr, tool = 'delete', type_ = geom_todel,
+           cats = '0-999999', layer = 2, quiet = True, stderr = nuldev)
+    v.edit(map_ = in_vect, tool = 'delete', type_ = 'centroid',
+           cats = '0-999999', quiet = True, stderr = nuldev)
+    v.edit(map_ = in_vect, tool = 'copy', bgmap_ = mbg_ogr, type_ = 'centroid',
+           cats = '0-999999', quiet = True, stderr = nuldev)
+    rand = random_name()
+    mbg_clean = prefix + rand
+    v.clean(input_ = in_vect, output = mbg_clean, tool = 'rmdac',
+            quiet = True, stderr = nuldev, overwrite = True)
+    v.centroids(input_ = mbg_clean, output = out_vect, overwrite = True,
+                    quiet = True, stderr = nuldev)
+    
 ############
 ### MAIN ###
 ############
 
 def main():
-    global tmpname
-    tmpname = grass.tempname(12)
-
+    global nuldev, tmpfile, prefix, geom_type, inmap, in_vect
+    nuldev = open(os.devnull, 'w')
+    tmpfile = grass.tempfile()
+    prefix = 'v_mbg_tmp_%d_' % os.getpid()
+    
     inmap = options['input']
+    outmap = options['output']
+    geom_type = options['geom_type']
+    group = options['group']
+    field = options['field']
+    export = options['export']
 
-    hull = tmpname + '_hull'    
-    v.hull(input = inmap, output = hull, flags = 'f', quiet = True)
-    
-    vert = tmpname + '_vert'    
-    v.to_points(input = hull, output = vert, use = 'vertex', layer = '-1', flags = 't', quiet = True)
-    
-    # xy_points = vector_to_nparray(inmap)
-    
-    hull_coords = vector_to_nparray(vert)
-    # hull_coords = hull_coords[::-1]
-    # print 'Convex hull points: \n', hull_coords, "\n"
-    
-    # Find minimum area bounding rectangle
-    (rot_angle, area, width, height, center_point, corner_points) = minBoundingRect(hull_coords)
-    
-    # print "Minimum area bounding box:"
-    # print "Rotation angle:", rot_angle, "rad  (", rot_angle*(180/math.pi), "deg )"
-    # print "Width:", width, " Height:", height, "  Area:", area
-    # print "Center point: \n", center_point 
-    # print "Corner points: \n", corner_points, "\n" 
-    
-    
-    # plt.scatter(xy_points[:,0], xy_points[:,1])
-    # plt.scatter(corner_points[:,0], corner_points[:,1], color='red')
-    # plt.scatter(center_point[0], center_point[1], color='green')
-    # # bbox = minimum_bounding_rectangle(points)
-    # # plt.fill(bbox[:,0], bbox[:,1], alpha=0.2)
-    # plt.axis('equal')
-    # plt.show()    
+    # check if the map is in the current mapset
+    mapset = grass.find_file(inmap, element='vector')['mapset']
+    if not mapset or mapset != grass.gisenv()['MAPSET']:
+        grass.fatal(_("Vector map <{}> not found in the current mapset").format(inmap))
 
+    # check for table existance for input map
+    try:
+        columns = grass.vector_columns(inmap).keys()
+    except CalledModuleError as e:
+        v.db_addtable(inmap, quiet = True, stderr = nuldev)
 
-    nparray_to_vector(corner_points, 'newvect')
-    nparray_to_vector(center_point, 'center_point')
+    # check for GPKG driver in OGR (for <export> option)
+    if export:
+        formats = grass.read_command('v.out.ogr', flags = 'l', quiet = True, stderr = nuldev)
+        if ' GPKG (rw+): GeoPackage' not in formats.splitlines():
+            grass.fatal(_("Option <export> needs GPKG (GeoPackage) driver for module <v.out.ogr>, but it was not found. Exit."))
+    # check for GPKG extension (need for GDAL & Co)
+    if export and '.gpkg' not in export:
+        export = export + '.gpkg'
     
-    v.hull(input = 'newvect', output = 'newvect_hull', flags = 'f', quiet = True, overwrite = True)
-
-
-    # import numpy
+    # save initial region for later
+    g.region(save = 'TMP_REGION_V_MBG')
     
-    # C, r2 = miniball.get_bounding_ball(hull_coords)
-    # print(C)
-    # print(r2)
-    
-    # import math
-    # math.sqrt(r2)
+    ## main ##
+    # check for <group> option
+    if group == 'none':
+        # test input feature type
+        vect_info = grass.vector_info_topo(inmap)
+        if vect_info['points'] > 0:
+            grass.fatal(_("Points found in input vector map <{}>. Cannot use option <group=none> with the points.").format(inmap))
+        # get cat's list
+        group_sel = v.db_select(flags = 'c', map = inmap, columns = 'cat', stdout_= grass.PIPE)
+        group_list = group_sel.outputs.stdout.splitlines()
+        rand = random_name()
+        outmap_edit = prefix + rand
+        v.edit(map = outmap_edit, tool = 'create', quiet = True, stderr = nuldev)
+        extr_mbg_list = []
 
-    # echo '668076.12141766 227634.66619505' | v.in.ascii in=- out=circle_center sep=' ' --o
-    # v.buffer in=circle_center out=circle dist=126720.88540607662 tolerance=0.001 --o
+        if export:
+            v.out_ogr(input_ = outmap_edit, output = export, output_layer = 'tmp',
+                      flags = 'n', format_ = 'GPKG', quiet = True, stderr = nuldev)
 
-
-    # def getMinVolEllipse(P, tolerance=0.01):
-    #     """ Author:
-    #     https://github.com/minillinim/ellipsoid
-    #     """
-    #     (N, d) = shape(P)
-    #     d = float(d)
         
-    #     # Q will be our working array
-    #     Q = vstack([copy(P.T), ones(N)]) 
-    #     QT = Q.T
+        db_info = get_db_info(inmap)
+        print(db_info)
         
-    #     # initializations
-    #     err = 1.0 + tolerance
-    #     u = (1.0 / N) * ones(N)
-
-    #     # Khachiyan Algorithm
-    #     while err > tolerance:
-    #         V = dot(Q, dot(diag(u), QT))
-    #         M = diag(dot(QT , dot(linalg.inv(V), Q)))    # M the diagonal vector of an NxN matrix
-    #         j = argmax(M)
-    #         maximum = M[j]
-    #         step_size = (maximum - d - 1.0) / ((d + 1.0) * (maximum - 1.0))
-    #         new_u = (1.0 - step_size) * u
-    #         new_u[j] += step_size
-    #         err = linalg.norm(new_u - u)
-    #         u = new_u
-
-    #     # center of the ellipse 
-    #     center = dot(P.T, u)
         
-    #     # the A matrix for the ellipse
-    #     A = linalg.inv(
-    #         dot(P.T, dot(diag(u), P)) - 
-    #         array([[a * b for b in center] for a in center])
-    #     ) / d
-        
-    #     # Get the values we'd like to return
-    #     U, s, rotation = linalg.svd(A)
-    #     radii = 1.0/sqrt(s)
-        
-    #     return (center, radii, rotation)
+        # extract features
+        for index, value in enumerate(group_list):
+            extr = prefix + '_extr_' + str(index)
+            try:
+                v.extract(input = inmap, where = 'cat == "{}"'.format(value),
+                          output = extr, quiet = True, stderr = nuldev)
+            except CalledModuleError:
+                grass.fatal(_('Cannot extract data with <group> option and compute convex hull... Make sure that there is no points in the input map with <group=none> option or check attributes values for special characters in the input vector map with <group=list> option'.format(inmap))) 
 
-
-
-    # # find the ellipsoid
-    # (center, radii, rotation) = getMinVolEllipse(hull_coords, .01)
-
-    # print(center)
-    # print(radii)
-    # print(math.degrees((rotation)[1][1]))
-    
-
-    
-    import math
-
-    """
-    https://stackoverflow.com/questions/38409156/minimal-enclosing-parallelogram-in-python
-    
-    Minimal Enclosing Parallelogram
-    
-    area, v1, v2, v3, v4 = mep(convex_polygon)
-    
-    convex_polygon - array of points. Each point is a array [x, y] (1d array of 2 elements)
-    points should be presented in clockwise order.
-    
-    the algorithm used is described in the following paper:
-    http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.53.9659&rep=rep1&type=pdf
-    """
-    
-    def distance(p1, p2, p):
-        return abs(((p2[1]-p1[1])*p[0] - (p2[0]-p1[0])*p[1] + p2[0]*p1[1] - p2[1]*p1[0]) /
-                   math.sqrt((p2[1]-p1[1])**2 + (p2[0]-p1[0])**2))
-    
-    def antipodal_pairs(convex_polygon):
-        l = []
-        n = len(convex_polygon)
-        p1, p2 = convex_polygon[0], convex_polygon[1]
-        
-        t, d_max = None, 0
-        for p in range(1, n):
-            d = distance(p1, p2, convex_polygon[p])
-            if d > d_max:
-                t, d_max = p, d
-                l.append(t)
-                
-        for p in range(1, n):
-            p1, p2 = convex_polygon[p % n], convex_polygon[(p+1) % n]
-            _p, _pp = convex_polygon[t % n], convex_polygon[(t+1) % n]
-            while distance(p1, p2, _pp) > distance(p1, p2, _p):
-                t = (t + 1) % n
-                _p, _pp = convex_polygon[t % n], convex_polygon[(t+1) % n]
-                l.append(t)
-        return l
-
-
-    # returns score, area, points from top-left, clockwise , favouring low area
-    def mep(convex_polygon):
-        def compute_parallelogram(convex_polygon, l, z1, z2):
-            def parallel_vector(a, b, c):
-                v0 = [c[0]-a[0], c[1]-a[1]]
-                v1 = [b[0]-c[0], b[1]-c[1]]
-                return [c[0]-v0[0]-v1[0], c[1]-v0[1]-v1[1]]
-
-            # finds intersection between lines, given 2 points on each line.
-            # (x1, y1), (x2, y2) on 1st line, (x3, y3), (x4, y4) on 2nd line.
-            def line_intersection(x1, y1, x2, y2, x3, y3, x4, y4):
-                px = ((x1*y2 - y1*x2)*(x3 - x4) - (x1 - x2)*(x3*y4 - y3*x4))/((x1-x2)*(y3-y4) - (y1-y2)*(x3-x4))
-                py = ((x1*y2 - y1*x2)*(y3 - y4) - (y1 - y2)*(x3*y4 - y3*x4))/((x1-x2)*(y3-y4) - (y1-y2)*(x3-x4))
-                return px, py
-
-
-            # from each antipodal point, draw a parallel vector,
-            # so ap1->ap2 is parallel to p1->p2
-            #    aq1->aq2 is parallel to q1->q2
-            p1, p2 = convex_polygon[z1 % n], convex_polygon[(z1+1) % n]
-            q1, q2 = convex_polygon[z2 % n], convex_polygon[(z2+1) % n]
-            ap1, aq1 = convex_polygon[l[z1 % n]], convex_polygon[l[z2 % n]]
-            ap2, aq2 = parallel_vector(p1, p2, ap1), parallel_vector(q1, q2, aq1)
             
-            a = line_intersection(p1[0], p1[1], p2[0], p2[1], q1[0], q1[1], q2[0], q2[1])
-            b = line_intersection(p1[0], p1[1], p2[0], p2[1], aq1[0], aq1[1], aq2[0], aq2[1])
-            d = line_intersection(ap1[0], ap1[1], ap2[0], ap2[1], q1[0], q1[1], q2[0], q2[1])
-            c = line_intersection(ap1[0], ap1[1], ap2[0], ap2[1], aq1[0], aq1[1], aq2[0], aq2[1])
+
+            attr_dict = grass.vector_db_select(extr)['values']
+            print(attr_dict)
             
-            s = distance(a, b, c) * math.sqrt((b[0]-a[0])**2 + (b[1]-a[1])**2)
-            return s, a, b, c, d
 
 
-        z1, z2 = 0, 0
-        n = len(convex_polygon)
+            extr_hull = prefix + '_extr_' + str(index) + '_hull'
+            hull_make(extr, extr_hull) 
+
+            hull_coords = hull_get_coords(extr_hull)
+            extr_mbg = prefix + '_mbg_' + str(index)
+            extr_mbg_list.append(extr_mbg)
+
+            mbg_make(extr_hull, hull_coords, extr_mbg)
+
+            if export:
+                lyr_name = 'mbg_' + str(index)
+                v.out_ogr(input = extr_mbg, output = export, type_ = 'area',
+                          output_layer = lyr_name,
+                          flags = 'u', format_ = 'GPKG')
+
+            rand = random_name()
+            bound_cats = prefix + rand            
+            v.category(input_ = extr_mbg, output = bound_cats, option = 'add',
+                       type_ = 'boundary',
+                       quiet = True, stderr = nuldev)        
+            v.edit(map_ = outmap_edit, tool = 'copy', bgmap = bound_cats,
+                   type_ = 'boundary', cats = 1)
+
+        g.rename(vector = (outmap_edit, outmap), overwrite = True)
+
+        # vect = VectorTopo(outmap)
+        # vect.open('w', tab_cols=cols)
         
-        # for each edge, find antipodal vertice for it (step 1 in paper).
-        l = antipodal_pairs(convex_polygon)
-
-        so, ao, bo, co, do, z1o, z2o = 100000000000, None, None, None, None, None, None
         
-        # step 2 in paper.
-        for z1 in range(0, n):
-            if z1 >= z2:
-                z2 = z1 + 1
-            p1, p2 = convex_polygon[z1 % n], convex_polygon[(z1+1) % n]
 
-            a, b, c = convex_polygon[z2 % n], convex_polygon[(z2+1) % n], convex_polygon[l[z2 % n]]
-            
-            if distance(p1, p2, a) >= distance(p1, p2, b):
-                continue
-            
-            while distance(p1, p2, c) > distance(p1, p2, b):
-                z2 += 1
-                a, b, c = convex_polygon[z2 % n], convex_polygon[(z2+1) % n], convex_polygon[l[z2 % n]]
-                
-            st, at, bt, ct, dt = compute_parallelogram(convex_polygon, l, z1, z2)
-            
-            
-            if st < so:
-                so, ao, bo, co, do, z1o, z2o = st, at, bt, ct, dt, z1, z2
+    elif group == 'all':
+        rand = random_name()
+        all_hull = prefix + rand
+        hull_make(inmap, all_hull)
+        hull_coords = hull_get_coords(all_hull)
+        mbg_make(all_hull, hull_coords, outmap)
 
-            # print('%s,%s,%s,%s,%s,%s,%s') % (so, ao, bo, co, do, z1o, z2o)
-
-
+        if export:
+            v.out_ogr(input_ = outmap, output = export, type_ = 'area',
+                      output_layer = 'mbg', format_ = 'GPKG',
+                      quiet = True, stderr = nuldev)
         
-        return so, ao, bo, co, do #, z1o, z2o
-    # sys.exit(1)            
+    elif group == 'list':
+        if not field:
+            grass.fatal(_("Attribute <field> must be selected with <group=list> option for group input features"))
+        
+        # check for field existance for input map
+        if field not in columns:
+            grass.fatal(_("Field <{}> not found in attribute table of input vector map <{}>".format(field, inmap)))
+                        
+        group_sel = v.db_select(flags = 'c', map = inmap, columns = field,
+                                group = field, stdout_= grass.PIPE)
+        group_list = group_sel.outputs.stdout.splitlines()
+        rand = random_name()
+        outmap_edit = prefix + rand
+        v.edit(map = outmap_edit, tool = 'create', quiet = True, stderr = nuldev)
+        
+        if export:
+            v.out_ogr(input_ = outmap_edit, output = export, output_layer = 'tmp',
+                      flags = 'n', format_ = 'GPKG', quiet = True, stderr = nuldev)
+        
+        for index, value in enumerate(group_list):
+            extr = prefix + '_extr_' + str(index)
+            try:
+                v.extract(input = inmap, where = '{} == "{}"'.format(field, value),
+                          output = extr, quiet = True, stderr = nuldev)
+            except CalledModuleError:
+                grass.fatal(_('Cannot extract data with <group> option and compute convex hull... Make sure that there is no points in the input map with <group=none> option or check attributes values for special characters in the input vector map with <group=list> option'.format(inmap)))
 
+            extr_hull = prefix + '_extr_' + str(index) + '_hull'
+            hull_make(extr, extr_hull)            
 
-    convex_polygon = array([ [587790.440499, 101453.451971], [595563.18932, 209494.660587], [673290.677534, 287222.1488], [690390.72494, 231258.357287], [663186.104066, 149644.494663] ])
-    # convex_polygon = 100*random.random((10,2))
+            hull_coords = hull_get_coords(extr_hull)
+            extr_mbg = prefix + '_mbg_' + str(index)
 
-    # convex_polygon = hull_coords[::-1]
+            mbg_make(extr_hull, hull_coords, extr_mbg)
 
-    print(convex_polygon)    
+            if export:
+                lyr_name = 'mbg_' + str(index)
+                v.out_ogr(input = extr_mbg, output = export, type_ = 'area',
+                          output_layer = lyr_name,
+                          flags = 'u', format_ = 'GPKG')
+
+        ### NEW ###            
+            rand = random_name()
+            bound_cats = prefix + rand            
+            v.category(input_ = extr_mbg, output = bound_cats, option = 'add',
+                       type_ = 'boundary', quiet = True, stderr = nuldev) 
+            v.edit(map_ = outmap_edit, tool = 'copy', bgmap = bound_cats,
+                   type_ = 'boundary', cats = 1)
+
+        g.rename(vector = (outmap_edit, outmap), overwrite = True)
     
-    area, v1, v2, v3, v4 = mep(convex_polygon)
-
-    print('%s,%s,%s,%s,%s') % (area, v1, v2, v3, v4)
+    # postprocessing MBG polygons
+    mbg_postprocess(outmap, 'centroid', outmap)
     
+    # restore initial region
+    g.region(region = 'TMP_REGION_V_MBG')
+        
     
-    
-    
-
-
-
 if __name__ == "__main__":
     options, flags = grass.parser()
     atexit.register(cleanup)
     main()
+    
     
