@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+kml_dir="/home/amuriy/Downloads/gmc_meteo/kml_test"
+json_dir="/home/amuriy/Downloads/gmc_meteo/json_test"
+
+db_host="localhost"
+db_name="bpd_postgis_dev"
+# db_user="bpd_owner"
+# db_pass="Prime#52"
+db_user="user"
+db_pass=""
+db_schema="is_grib"
